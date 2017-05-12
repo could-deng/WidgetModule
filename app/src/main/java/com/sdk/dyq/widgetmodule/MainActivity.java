@@ -2,6 +2,7 @@ package com.sdk.dyq.widgetmodule;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,24 +19,9 @@ public class MainActivity extends AppCompatActivity {
     private SwipeLoadLayout swipeLayout;
     private ListView swipe_target;
     private ListViewAdapter lvAdapter;
-    private List<Integer> dataList;
 
-    private int messageIndex = 1;//页码
-
-    /**
-     * 仅用于模拟主角面更新操作
-     */
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    stopRefresh(getDataList(),messageIndex);
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    };
+    private static List<Integer> dataList;
+    private static int messageIndex = 1;//页码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
-    private List<Integer> getDataList(){
+    private static List<Integer> getDataList(){
         if(dataList == null){
             dataList = new ArrayList<>();
             for(int i =0;i<10;i++){
@@ -93,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Thread.sleep(1500);
                         addTestData();
-                        handler.sendEmptyMessage(1);
+                        ThreadManager.getmUiHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                stopRefresh(getDataList(),messageIndex);
+                            }
+                        });
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -130,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        handler = null;
         super.onDestroy();
     }
 }

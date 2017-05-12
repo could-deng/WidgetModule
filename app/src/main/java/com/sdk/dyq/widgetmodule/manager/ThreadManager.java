@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 
 import com.sdk.dyq.widgetmodule.utils.DataUtils;
 
@@ -62,7 +63,7 @@ public final class ThreadManager {
         if(mUiHandler == null){
             synchronized (mMainHandlerLock){
 //                if(mUiHandler == null){
-                    mUiHandler = new Handler();
+                    mUiHandler = new Handler(Looper.getMainLooper());
 //                }
             }
         }
