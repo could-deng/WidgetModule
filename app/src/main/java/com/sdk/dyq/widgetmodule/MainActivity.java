@@ -15,7 +15,7 @@ import com.sdk.dyq.widgetmodule.manager.ThreadManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends OptionMenuActivity {
     private SwipeLoadLayout swipeLayout;
     private ListView swipe_target;
     private ListViewAdapter lvAdapter;

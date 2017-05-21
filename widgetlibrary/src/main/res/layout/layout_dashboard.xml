@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.sdk.dyq.widgetlibrary.progress.ArcProgress
+        android:id="@+id/arcprogress"
+        android:layout_width="@dimen/segment_progress_dashboard_width"
+        android:layout_height="@dimen/segment_progress_dashboard_height"
+        android:layout_centerInParent="true"
+        />
+    <com.sdk.dyq.widgetlibrary.TextView.AnimationNumberTextView
+        android:id="@+id/tv_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/progress_yellow"
+        android:textSize="50sp"/>
+</RelativeLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="segment_progress_dashboard_width">230dp</dimen>
+    <dimen name="segment_progress_dashboard_height">230dp</dimen>
+
+    <dimen name="segment_progress_dashboard_width_with_space">270dp</dimen>
+    <dimen name="segment_progress_dashboard_height_with_space">270dp</dimen>
+</resources>

@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white_milky_text">#C9C7D1</color>
+
+
+
+
+
+    <color name="progress1_blue">#24A8FD</color>
+    <color name="progress2_green">#1DE677</color>
+    <color name="progress3_yellow">#FFBF22</color>
+    <color name="progress4_yellow">#FF8B22</color>
+    <color name="progress5_yellow">#FF5622</color>
+
+
+    <color name="bg_black">#2B2A33</color>
+    <color name="progress_yellow">#FF8B22</color>
 </resources>

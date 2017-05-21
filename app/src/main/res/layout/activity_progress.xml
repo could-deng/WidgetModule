@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.sdk.dyq.widgetlibrary.progress.ArcProgress
+            android:id="@+id/arc_progress"
+            android:layout_width="@dimen/segment_progress_dashboard_width_with_space"
+            android:layout_height="@dimen/segment_progress_dashboard_height_with_space"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+        <com.sdk.dyq.widgetlibrary.progress.SegmentProgress
+            android:id="@+id/segmentProgress"
+            android:layout_width="@dimen/segment_progress_dashboard_width_with_space"
+            android:layout_height="@dimen/segment_progress_dashboard_height_with_space"
+            android:layout_gravity="center_horizontal"/>
+        <com.sdk.dyq.widgetlibrary.progress.DashBoardProgress
+            android:id="@+id/dashboard_progress"
+            android:layout_width="@dimen/segment_progress_dashboard_width_with_space"
+            android:layout_height="@dimen/segment_progress_dashboard_height_with_space"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+</ScrollView>

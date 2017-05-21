@@ -30,4 +30,6 @@
         <attr name="load_more_complete_to_default_scrolling_duration" format="integer"/>
         <attr name="default_to_loading_more_scrolling_duration" format="integer"/>
     </declare-styleable>
+
+
 </resources>
