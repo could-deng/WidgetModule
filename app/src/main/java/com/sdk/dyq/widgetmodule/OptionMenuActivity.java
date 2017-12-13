@@ -29,6 +29,10 @@ public class OptionMenuActivity extends AppCompatActivity {
                 intent.setClass(OptionMenuActivity.this,ProgressTestActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.WaveViewActivity:
+                intent.setClass(OptionMenuActivity.this,WaveViewActivity.class);
+                startActivity(intent);
+                break;
         }
         return true;
     }

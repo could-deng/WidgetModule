@@ -8,4 +8,8 @@
     <item android:title="ProgressTestActivity"
         android:id="@+id/ProgressTestActivity"
         app:showAsAction="never" />
+    <item android:title="WaveViewActivity"
+        android:id="@+id/WaveViewActivity"
+        app:showAsAction="never"
+        />
 </menu>
