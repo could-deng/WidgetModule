@@ -174,7 +174,7 @@ public class WaveView extends View {
     }
 
     /**
-     * https://www.desmos.com/calculator 画函数图
+     * https://www.desmos.com/calculator   画函数图
      * @param mapX
      * @param offSet
      * @return

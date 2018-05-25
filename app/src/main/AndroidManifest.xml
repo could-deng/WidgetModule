@@ -14,16 +14,17 @@
         </activity>
 
         <activity android:name=".ProgressTestActivity"
-            android:launchMode="singleInstance"/>
-
-        <activity android:name=".OptionMenuActivity"/>
-        <activity android:name=".WaveViewActivity"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".OptionMenuActivity"/>
+        <activity android:name=".WaveViewActivity"
+            android:launchMode="singleInstance">
+
             </activity>
     </application>
 

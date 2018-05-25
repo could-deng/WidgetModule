@@ -6,21 +6,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <com.sdk.dyq.widgetlibrary.progress.ArcProgress
-            android:id="@+id/arc_progress"
-            android:layout_width="@dimen/segment_progress_dashboard_width_with_space"
-            android:layout_height="@dimen/segment_progress_dashboard_height_with_space"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
-        <com.sdk.dyq.widgetlibrary.progress.SegmentProgress
-            android:id="@+id/segmentProgress"
-            android:layout_width="@dimen/segment_progress_dashboard_width_with_space"
-            android:layout_height="@dimen/segment_progress_dashboard_height_with_space"
+        <!--<com.sdk.dyq.widgetlibrary.progress.ArcProgress-->
+            <!--android:id="@+id/arc_progress"-->
+            <!--android:layout_width="@dimen/segment_progress_dashboard_width_with_space"-->
+            <!--android:layout_height="@dimen/segment_progress_dashboard_height_with_space"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:visibility="gone"/>-->
+        <!--<com.sdk.dyq.widgetlibrary.progress.SegmentProgress-->
+            <!--android:id="@+id/segmentProgress"-->
+            <!--android:layout_width="@dimen/segment_progress_dashboard_width_with_space"-->
+            <!--android:layout_height="@dimen/segment_progress_dashboard_height_with_space"-->
+            <!--android:layout_gravity="center_horizontal"/>-->
+        <!--<com.sdk.dyq.widgetlibrary.progress.DashBoardProgress-->
+            <!--android:id="@+id/dashboard_progress"-->
+            <!--android:layout_width="@dimen/segment_progress_dashboard_width_with_space"-->
+            <!--android:layout_height="@dimen/segment_progress_dashboard_height_with_space"-->
+            <!--android:layout_gravity="center"/>-->
+        <com.sdk.dyq.widgetmodule.PayResultCircle
+            android:id="@+id/pay_circle"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="tick"
+            android:onClick="onTickClick"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="error"
+            android:onClick="onErrorClick"/>
+        <TextView
+            android:id="@+id/tv_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="!!!!!!"
             android:layout_gravity="center_horizontal"/>
-        <com.sdk.dyq.widgetlibrary.progress.DashBoardProgress
-            android:id="@+id/dashboard_progress"
-            android:layout_width="@dimen/segment_progress_dashboard_width_with_space"
-            android:layout_height="@dimen/segment_progress_dashboard_height_with_space"
-            android:layout_gravity="center"/>
+        <com.sdk.dyq.widgetlibrary.bluepay.RandomTextView
+            android:id="@+id/tv_random_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView>
     </LinearLayout>
 </ScrollView>
