@@ -34,7 +34,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="error"
+            android:text="boom"
             android:onClick="onErrorClick"/>
         <TextView
             android:id="@+id/tv_txt"
@@ -48,6 +48,7 @@
             android:layout_height="wrap_content" />
 
         <com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView
+            android:id="@+id/boomNumberView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

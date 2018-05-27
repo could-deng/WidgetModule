@@ -16,6 +16,7 @@ import java.util.Random;
  */
 
 public class RandomTextView extends AppCompatTextView{
+    public static final String TAG = "RandomTextView";
     //高位快
     public static final int FIRSTF_FIRST = 0;
     //高位慢
@@ -43,7 +44,8 @@ public class RandomTextView extends AppCompatTextView{
     private int[] pianyilianglist;
     //总滚动距离数组
     private int[] pianyiliangSum;
-    //滚动完成判断，标志位1代表显示最终的值，0代表显示随机数
+    //滚动完成判断，
+//    0表示还没绘制到最后一行，1表示为绘制到最后一行没有进行最后的定位绘制，2表示已经进行了定位绘制。
     private int[] overLine;
 
 
@@ -56,7 +58,7 @@ public class RandomTextView extends AppCompatTextView{
 
     //text int值列表
     private ArrayList<String> arrayListText;
-    //text 原值列表
+    //text 变化前原值列表
     private ArrayList<String> arrayListOriginText;
 
     //字体宽度，每个字符的宽度
@@ -93,7 +95,7 @@ public class RandomTextView extends AppCompatTextView{
         this.callBack = callBack;
     }
 
-    //region=======设置转动速度===========
+    //region=======设置转动速度(偏移量)===========
 
     //按系统提供的类型滚动
     public void setPianyilian(int pianyiliangTpye) {
@@ -135,12 +137,12 @@ public class RandomTextView extends AppCompatTextView{
     }
 
 
-    //endregion=======设置转动速度===========
+    //endregion=======设置转动速度(偏移量)===========
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        Log.d("RandomTextView","draw");
+        Log.d(TAG,"draw");
         if (firstIn) {
             firstIn = false;
             super.onDraw(canvas);
@@ -172,16 +174,17 @@ public class RandomTextView extends AppCompatTextView{
         //     }
     }
 
+    boolean iffff = false;
 
     //绘制
     private void drawNumber(Canvas canvas) {
-        //todo test
+        //todo test 画底线
         canvas.drawLine(0,baseline,f0,baseline,p);
 
         for (int j = 0; j < numLength; j++) {//每列
             for (int i = 1; i < maxLine; i++) {//每行
                 //检查当前字符位，是不是最后一个
-                if (i == maxLine - 1 && i * baseline + pianyiliangSum[j] <= baseline){
+                if (i == maxLine - 1 && i * baseline + pianyiliangSum[j] <= baseline){//最后一行并且
                     //归零偏移量，修改标志位
                     pianyilianglist[j] = 0;
                     overLine[j] = 1;
@@ -194,10 +197,13 @@ public class RandomTextView extends AppCompatTextView{
                     if (auto == numLength * 2 - 1) {
 
                         handler.removeCallbacks(task);
-                        //修复停止后绘制问题
-                        if (this.auto)
-                            invalidate();
                         this.auto = false;
+                        if (this.auto) {//通知进行最后一次绘制
+                            iffff = true;
+                            invalidate();
+                            return;
+                        }
+
                     }
                 }
 
@@ -218,11 +224,10 @@ public class RandomTextView extends AppCompatTextView{
 
                         drawText(canvas, arrayListText.get(j) + "", 0 + f0 * j,
                                 baseline, p);
+
                         // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
                         //        baseline, p);
-                        if(callBack!=null){
-                            callBack.onAnimFinish();
-                        }
+
                     }
 
 
@@ -238,8 +243,8 @@ public class RandomTextView extends AppCompatTextView{
 
     /**
      * 获取随机数
-     * @param i
-     * @param j
+     * @param i 行
+     * @param j 列
      * @return
      */
     private String getRandomText(int i , int j){
@@ -327,7 +332,7 @@ public class RandomTextView extends AppCompatTextView{
         public void run() {
             // TODO Auto-generated method stub
             if (auto) {
-                Log.d("RandomTextView",""+auto);
+//                Log.d("RandomTextView",""+auto);
                 handler.postDelayed(this, 20);
 
                 for (int j = 0; j < numLength; j++) {
@@ -336,6 +341,8 @@ public class RandomTextView extends AppCompatTextView{
                 }
 
                 invalidate();
+            }else{
+
             }
 
         }
@@ -368,6 +375,6 @@ public class RandomTextView extends AppCompatTextView{
 
 
     public interface TextAnimCallBack{
-        public void onAnimFinish();
+        void onAnimFinish();
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView;
 import com.sdk.dyq.widgetlibrary.bluepay.RandomTextView;
 import com.sdk.dyq.widgetlibrary.progress.DashBoardProgress;
 import com.sdk.dyq.widgetlibrary.progress.SegmentProgress;
@@ -21,6 +22,8 @@ public class ProgressTestActivity extends Activity {
     private PayResultCircle pay_circle;
     private TextView tv_txt;
     private RandomTextView mRandomTextView;
+    private BoomNumberView boomNumberView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +44,14 @@ public class ProgressTestActivity extends Activity {
         mRandomTextView = (RandomTextView) findViewById(R.id.tv_random_tv);
         tv_txt = (TextView) findViewById(R.id.tv_txt);
         pay_circle = (PayResultCircle) findViewById(R.id.pay_circle);
+        boomNumberView = (BoomNumberView) findViewById(R.id.boomNumberView);
         pay_circle.setCallback(new PayResultCircle.ProgressCallback() {
             @Override
             public void changeState(int state) {
                 tv_txt.setText(state+"");
             }
         });
+
     }
 
     public void onTickClick(View view){
@@ -58,9 +63,10 @@ public class ProgressTestActivity extends Activity {
         mRandomTextView.start("123456","110.00",RandomTextView.FIRSTF_LAST);
     }
     public void onErrorClick(View view){
-        if(pay_circle!=null){
-            pay_circle.completeDraw(PayResultCircle.STATE_ERROR);
-        }
+//        if(pay_circle!=null){
+//            pay_circle.completeDraw(PayResultCircle.STATE_ERROR);
+//        }
+        boomNumberView.startBoomAnim();
     }
     @Override
     protected void onResume() {

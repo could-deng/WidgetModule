@@ -15,13 +15,16 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.sdk.dyq.widgetlibrary.R;
+import com.sdk.dyq.widgetlibrary.swiperefresh.SwipeLoadLayout;
 
 import java.util.Random;
 
@@ -31,6 +34,8 @@ import java.util.Random;
  */
 
 public class BoomNumberView extends RelativeLayout implements RandomTextView.TextAnimCallBack {
+
+    public static final String TAG = "BoomNumberView";
     //碎花宽度 px
     public static final int FLOWER_WIDTH = 10;
 
@@ -43,6 +48,8 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     int height;
 
     float widthPerChar;
+    float t = 0;
+
 
     private Random random;
     private RectF rectF;
@@ -51,33 +58,28 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
     private Handler mHandler;
 
-    public class MyHandler extends Handler{
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-        }
-    }
-
     public BoomNumberView(Context context) {
-        super(context,null);
+        this(context,null);
     }
 
     public BoomNumberView(Context context, AttributeSet attrs) {
-        super(context, attrs,0);
+        this(context, attrs,0);
     }
 
     public BoomNumberView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context,attrs);
     }
 
-    private void init(Context context){
+    private void init(Context context,AttributeSet attrs){
         View container_view = LayoutInflater.from(context).inflate(R.layout.layout_boom_num_view,null);
         randomTextView = (RandomTextView) container_view.findViewById(R.id.tv_random_num);
         if(randomTextView!=null){
             randomTextView.setCallBack(this);
         }
+        addView(container_view,new LinearLayout.LayoutParams(context,attrs));
+
+
         paint = new Paint();
         paint.setColor(Color.YELLOW);
         paint.setAntiAlias(true);
@@ -104,7 +106,6 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
                 }
             }
         };
-
     }
 
     @Override
@@ -115,12 +116,10 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
     }
 
-    float t = 0;
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        Log.e(BoomNumberView.TAG,"!!!!!!!!!!!!!!draw");
         canvas.translate(width/2, height/2);
 
         t += 1f/(500/25);
@@ -146,7 +145,16 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         }else {
             mHandler.removeCallbacksAndMessages(null);
         }
+    }
 
+
+    /**
+     * 开始启动动画
+     */
+    public void startBoomAnim(){
+        if(randomTextView!=null){
+            randomTextView.start("123456","110.00",RandomTextView.FIRSTF_LAST);
+        }
 
     }
 
@@ -303,19 +311,21 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
      * 滚动数字结束的回调
      */
     @Override
-    public void onAnimFinish() {
-        iv_right.setImageResource(R.color.progress2_green);
-        RelativeLayout.LayoutParams lp = new LayoutParams(10,10);
-        iv_right.setLayoutParams(lp);
-
-        AnimatorSet animatorSet = getAnimatorSet(iv_right);
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                //3、贝塞尔曲线动画执行后移除View
-            }
-        });
-        animatorSet.start();
+    public void onAnimFinish(){
+        Log.e(BoomNumberView.TAG,"onAnimFinish()");
+        invalidate();
+//        iv_right.setImageResource(R.color.progress2_green);
+//        RelativeLayout.LayoutParams lp = new LayoutParams(10,10);
+//        iv_right.setLayoutParams(lp);
+//
+//        AnimatorSet animatorSet = getAnimatorSet(iv_right);
+//        animatorSet.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                //3、贝塞尔曲线动画执行后移除View
+//            }
+//        });
+//        animatorSet.start();
 
     }
 
