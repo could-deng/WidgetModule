@@ -6,10 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.sdk.dyq.widgetlibrary.bluepay.AutoScrollTextView;
 import com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView;
 import com.sdk.dyq.widgetlibrary.bluepay.RandomTextView;
 import com.sdk.dyq.widgetlibrary.progress.DashBoardProgress;
 import com.sdk.dyq.widgetlibrary.progress.SegmentProgress;
+
+import java.util.Random;
 
 /**
  * Created by Administrator on 2017/5/21.
@@ -23,6 +26,8 @@ public class ProgressTestActivity extends Activity {
     private TextView tv_txt;
     private RandomTextView mRandomTextView;
     private BoomNumberView boomNumberView;
+
+    private AutoScrollTextView mAutoScrollViewNumberView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +46,7 @@ public class ProgressTestActivity extends Activity {
 //        dashboard_progress = (DashBoardProgress) findViewById(R.id.dashboard_progress);
 //        dashboard_progress.setAnimText(111.111f);
 //        dashboard_progress.setProgress((int) (111.111f * 100) / getState((long) 111.111f));
-        mRandomTextView = (RandomTextView) findViewById(R.id.tv_random_tv);
+//        mRandomTextView = (RandomTextView) findViewById(R.id.tv_random_tv);
         tv_txt = (TextView) findViewById(R.id.tv_txt);
         pay_circle = (PayResultCircle) findViewById(R.id.pay_circle);
         boomNumberView = (BoomNumberView) findViewById(R.id.boomNumberView);
@@ -52,15 +57,37 @@ public class ProgressTestActivity extends Activity {
             }
         });
 
+//        initScrollView();
     }
+//    private void initScrollView(){
+//        mAutoScrollViewNumberView = (AutoScrollTextView) findViewById(R.id.id_scroll_text);
+//        mAutoScrollViewNumberView.setMode(AutoScrollTextView.Mode.UP);
+//        mAutoScrollViewNumberView.setNumber(7);
+//        mAutoScrollViewNumberView.setTargetNumber(7);
+//
+//        mAutoScrollViewNumberView.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                Random random = new Random();
+//                int start = random.nextInt(10);
+//                int end = random.nextInt(10);
+//                setTitle("Mode: Up , "+start+" -> " +end);
+//                mAutoScrollViewNumberView.setNumber(start);
+//                mAutoScrollViewNumberView.setTargetNumber(end);
+//            }
+//        });
+//    }
+
+
+
 
     public void onTickClick(View view){
 //        if(pay_circle!=null){
 //            pay_circle.completeDraw(PayResultCircle.STATE_TICK);
 //        }
-//        mRandomTextView.setText("123243");
-//        mRandomTextView.setPianyilian(RandomTextView.FIRSTF_LAST);
-        mRandomTextView.start("123456","110.00",RandomTextView.FIRSTF_LAST);
+        mRandomTextView.start("123456","110000",RandomTextView.FIRSTF_LAST);
     }
     public void onErrorClick(View view){
 //        if(pay_circle!=null){

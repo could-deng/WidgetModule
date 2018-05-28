@@ -29,7 +29,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="tick"
+            android:text="flower"
             android:onClick="onTickClick"/>
         <Button
             android:layout_width="wrap_content"
@@ -42,10 +42,6 @@
             android:layout_height="wrap_content"
             android:text="!!!!!!"
             android:layout_gravity="center_horizontal"/>
-        <com.sdk.dyq.widgetlibrary.bluepay.RandomTextView
-            android:id="@+id/tv_random_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView
             android:id="@+id/boomNumberView"
@@ -53,5 +49,12 @@
             android:layout_height="wrap_content">
 
         </com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView>
+
+
+        <!--<com.sdk.dyq.widgetlibrary.bluepay.AutoScrollTextView-->
+            <!--android:id="@+id/id_scroll_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
     </LinearLayout>
 </ScrollView>

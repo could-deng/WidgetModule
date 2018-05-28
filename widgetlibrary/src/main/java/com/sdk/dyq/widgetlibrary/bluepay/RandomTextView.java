@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -74,7 +76,6 @@ public class RandomTextView extends AppCompatTextView{
     private Paint p_test;
     private TextAnimCallBack callBack;
 
-
     public RandomTextView(Context context) {
         this(context,null);
     }
@@ -89,6 +90,16 @@ public class RandomTextView extends AppCompatTextView{
                 randomNum[i][j] = "-1";
             }
         }
+        //            p = getPaint();
+        p = new Paint();
+        p.setTextAlign(Paint.Align.LEFT);
+        p.setTextSize(mTextSize);
+        p.setColor(mTextColor);
+
+        p_test = getPaint();
+        p_test.setColor(Color.RED);
+
+
     }
 
     public void setCallBack(TextAnimCallBack callBack){
@@ -113,7 +124,7 @@ public class RandomTextView extends AppCompatTextView{
                 break;
             case FIRSTF_LAST:
                 for (int i = 0; i < text.length(); i++) {
-                    pianyilianglist[i] = 2 + i;
+                    pianyilianglist[i] = 15 + i;
                 }
 
                 break;
@@ -139,6 +150,120 @@ public class RandomTextView extends AppCompatTextView{
 
     //endregion=======设置转动速度(偏移量)===========
 
+
+    //region========控件的布局位置、长宽等等==============
+
+    private int mTextSize = sp2px(70);//默认的字体大小
+
+    private int mTextColor = Color.BLUE;
+
+    private Rect mTextBounds = new Rect();
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        int width = measureWidth(widthMeasureSpec);
+        int height = measureHeight(heightMeasureSpec);
+        setMeasuredDimension(width, height);
+    }
+
+    private int measureHeight(int measureSpec)
+    {
+        int mode = MeasureSpec.getMode(measureSpec);
+        int val = MeasureSpec.getSize(measureSpec);
+        int result = 0;
+        switch (mode)
+        {
+            case MeasureSpec.EXACTLY:
+                result = val;
+                break;
+            case MeasureSpec.AT_MOST:
+            case MeasureSpec.UNSPECIFIED:
+                p.getTextBounds("0", 0, 1, mTextBounds);
+                result = mTextBounds.height();
+                break;
+        }
+        result = mode == MeasureSpec.AT_MOST ? Math.min(result, val) : result;
+        return result + getPaddingTop() + getPaddingBottom();
+    }
+
+    private int measureWidth(int measureSpec)
+    {
+        int mode = MeasureSpec.getMode(measureSpec);
+        int val = MeasureSpec.getSize(measureSpec);
+        int result = 0;
+        switch (mode)
+        {
+            case MeasureSpec.EXACTLY:
+                result = val;
+                break;
+            case MeasureSpec.AT_MOST:
+            case MeasureSpec.UNSPECIFIED:
+                if(valueOrigin!=null) {
+//                    p.getTextBounds(valueOrigin, 0, valueOrigin.length(), mTextBounds);
+//                    result = mTextBounds.width();
+                    result = 0;
+                    float[] widths = new float[valueOrigin.length()];
+                    p.getTextWidths(valueOrigin, widths);
+                    for(int i = 0;i<widths.length;i++){
+                        result += widths[i];
+                    }
+                }else{
+                    p.getTextBounds("0", 0, 1, mTextBounds);
+                    result = mTextBounds.width();
+                }
+
+                break;
+        }
+        result = mode == MeasureSpec.AT_MOST ? Math.min(result, val) : result;
+        return result + getPaddingLeft() + getPaddingRight();
+    }
+
+
+    public void setTextSizeDP(int mTextSize)
+    {
+        this.mTextSize = dp2px(mTextSize);
+        if(p!=null){
+            p.setTextSize(this.mTextSize);
+        }
+        requestLayout();
+        invalidate();
+    }
+    public void setTextSizeSP(int mTextSize){
+        this.mTextSize = sp2px(mTextSize);
+        if(p!=null){
+            p.setTextSize(this.mTextSize);
+        }
+        requestLayout();
+        invalidate();
+    }
+
+    public void setTextColor(int mTextColor)
+    {
+        this.mTextColor = mTextColor;
+        if(p!=null){
+            p.setColor(mTextColor);
+        }
+        invalidate();
+    }
+
+    private int dp2px(float dpVal)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dpVal, getResources().getDisplayMetrics());
+    }
+
+
+    private int sp2px(float dpVal)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                dpVal, getResources().getDisplayMetrics());
+    }
+
+    //endregion========控件的布局位置、长宽等等==============
+
+
+
+
     @Override
     protected void onDraw(Canvas canvas) {
 
@@ -146,18 +271,20 @@ public class RandomTextView extends AppCompatTextView{
         if (firstIn) {
             firstIn = false;
             super.onDraw(canvas);
-            p = getPaint();
-            Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
+
+
+//            Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
             measuredHeight = getMeasuredHeight();
-            Log.d("EEEEEEE", "onDraw: " + measuredHeight);
-            baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+//            baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+            baseline = measuredHeight;
+
+            p.setColor(mTextColor);
+            p.setTextSize(mTextSize);
 
             float[] widths = new float[4];
             p.getTextWidths("0000", widths);
             f0 = widths[0];//获取第一个字符的宽度
-
-            p_test = getPaint();
-            p_test.setColor(Color.BLUE);
+            Log.d(TAG, "onDraw(),getMeasuredHeight=" + measuredHeight+",baseline="+baseline+",每个字符宽度fo="+f0);
 
             invalidate();
 
@@ -177,7 +304,7 @@ public class RandomTextView extends AppCompatTextView{
     //绘制
     private void drawNumber(Canvas canvas) {
         //todo test 画底线
-        canvas.drawLine(0,baseline,f0,baseline,p);
+        canvas.drawLine(0,baseline/2,f0,baseline/2,p_test);
 
         for (int j = 0; j < numLength; j++) {//每列
             for (int i = 1; i < maxLine; i++) {//每行
@@ -237,8 +364,6 @@ public class RandomTextView extends AppCompatTextView{
                             }
                         }
                     }
-
-
                     //break;
                 }
 
@@ -283,10 +408,9 @@ public class RandomTextView extends AppCompatTextView{
         return re;
     }
 
-    //开始滚动
 
     /**
-     *
+     * 开始滚动
      * @param originNum
      */
     public void start(String originNum , String afterNum, int rollType){
@@ -299,8 +423,9 @@ public class RandomTextView extends AppCompatTextView{
 
         setPianyilian(rollType);
         setText(valueOrigin);
-        handler.postDelayed(task, 266);
 
+        // TODO: 2018/5/28 test暂时注释
+        handler.postDelayed(task, 266);
         auto = true;
 
     }
@@ -324,12 +449,11 @@ public class RandomTextView extends AppCompatTextView{
 
     }
 
-    ;
-
 
     private static final Handler handler = new Handler();
 
     public void destroy() {
+        Log.e(TAG,"销毁RandomTextView");
         auto = false;
         handler.removeCallbacks(task);
 
@@ -338,15 +462,11 @@ public class RandomTextView extends AppCompatTextView{
     private final Runnable task = new Runnable() {
 
         public void run() {
-            // TODO Auto-generated method stub
             if (auto) {
-//                Log.d("RandomTextView",""+auto);
                 handler.postDelayed(this, 20);
-
                 for (int j = 0; j < numLength; j++) {
                     pianyiliangSum[j] -= pianyilianglist[j];
                 }
-
                 invalidate();
             }else{
 
@@ -374,9 +494,6 @@ public class RandomTextView extends AppCompatTextView{
     private void drawText(Canvas mCanvas, String text, float x, float y, Paint p) {
         if (y >= -measuredHeight && y <= 2 * measuredHeight) {
             mCanvas.drawText(text + "", x, y, p);
-        }
-        else{
-            return;
         }
     }
 
