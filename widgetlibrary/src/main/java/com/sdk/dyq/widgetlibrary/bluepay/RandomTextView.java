@@ -153,7 +153,7 @@ public class RandomTextView extends AppCompatTextView{
             baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
 
             float[] widths = new float[4];
-            p.getTextWidths("9999", widths);
+            p.getTextWidths("0000", widths);
             f0 = widths[0];//获取第一个字符的宽度
 
             p_test = getPaint();
@@ -173,8 +173,6 @@ public class RandomTextView extends AppCompatTextView{
 
         //     }
     }
-
-    boolean iffff = false;
 
     //绘制
     private void drawNumber(Canvas canvas) {
@@ -199,7 +197,6 @@ public class RandomTextView extends AppCompatTextView{
                         handler.removeCallbacks(task);
                         this.auto = false;
                         if (this.auto) {//通知进行最后一次绘制
-                            iffff = true;
                             invalidate();
                             return;
                         }
@@ -227,7 +224,18 @@ public class RandomTextView extends AppCompatTextView{
 
                         // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
                         //        baseline, p);
-
+                        if(i == maxLine-1 && j == 0){
+                            boolean ifEnd = true;
+                            for(int kk = 0 ;kk<overLine.length;kk++){
+                                if(overLine[kk]<2){
+                                    ifEnd = false;
+                                    break;
+                                }
+                            }
+                            if(ifEnd && callBack!=null){
+                                callBack.onAnimFinish();
+                            }
+                        }
                     }
 
 
@@ -337,7 +345,6 @@ public class RandomTextView extends AppCompatTextView{
 
                 for (int j = 0; j < numLength; j++) {
                     pianyiliangSum[j] -= pianyilianglist[j];
-
                 }
 
                 invalidate();

@@ -18,6 +18,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,6 +78,8 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         if(randomTextView!=null){
             randomTextView.setCallBack(this);
         }
+        randomTextView.setGravity(CENTER_HORIZONTAL);
+
         addView(container_view,new LinearLayout.LayoutParams(context,attrs));
 
 
@@ -153,7 +156,7 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
      */
     public void startBoomAnim(){
         if(randomTextView!=null){
-            randomTextView.start("123456","110.00",RandomTextView.FIRSTF_LAST);
+            randomTextView.start("123.45","110.00",RandomTextView.FIRSTF_LAST);
         }
 
     }
@@ -200,7 +203,7 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
             //point1
         point1[0] = point0[0] + 10;
-        point1[1] = point0[1] +5;//+ random.nextInt(5) + random.nextFloat();
+        point1[1] = point0[1] + 5;//+ random.nextInt(5) + random.nextFloat();
 
 //            point1And2Right[index][0] = point0[0] + 10;
 //            point1And2Right[index][1] = point0[1] + random.nextInt(5) + random.nextFloat();
