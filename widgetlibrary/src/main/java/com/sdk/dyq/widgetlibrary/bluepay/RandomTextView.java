@@ -10,6 +10,9 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -124,7 +127,7 @@ public class RandomTextView extends AppCompatTextView{
                 break;
             case FIRSTF_LAST:
                 for (int i = 0; i < text.length(); i++) {
-                    pianyilianglist[i] = 15 + i;
+                    pianyilianglist[i] = 10 + i;
                 }
 
                 break;
@@ -153,7 +156,7 @@ public class RandomTextView extends AppCompatTextView{
 
     //region========控件的布局位置、长宽等等==============
 
-    private int mTextSize = sp2px(70);//默认的字体大小
+    private int mTextSize = sp2px(50);//默认的字体大小
 
     private int mTextColor = Color.BLUE;
 
@@ -202,11 +205,13 @@ public class RandomTextView extends AppCompatTextView{
 //                    p.getTextBounds(valueOrigin, 0, valueOrigin.length(), mTextBounds);
 //                    result = mTextBounds.width();
                     result = 0;
-                    float[] widths = new float[valueOrigin.length()];
-                    p.getTextWidths(valueOrigin, widths);
-                    for(int i = 0;i<widths.length;i++){
-                        result += widths[i];
-                    }
+//                    float[] widths = new float[valueOrigin.length()];
+//                    p.getTextWidths(valueOrigin, widths);
+//                    for(int i = 0;i<widths.length;i++){
+//                        result += widths[i];
+//                    }
+                    result = (int) Math.ceil(p.measureText(valueOrigin));
+
                 }else{
                     p.getTextBounds("0", 0, 1, mTextBounds);
                     result = mTextBounds.width();
@@ -266,8 +271,7 @@ public class RandomTextView extends AppCompatTextView{
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        Log.d(TAG,"draw");
+//        Log.d(TAG,"draw");
         if (firstIn) {
             firstIn = false;
             super.onDraw(canvas);
@@ -284,7 +288,8 @@ public class RandomTextView extends AppCompatTextView{
             float[] widths = new float[4];
             p.getTextWidths("0000", widths);
             f0 = widths[0];//获取第一个字符的宽度
-            Log.d(TAG, "onDraw(),getMeasuredHeight=" + measuredHeight+",baseline="+baseline+",每个字符宽度fo="+f0);
+
+//            Log.d(TAG, "onDraw(),getMeasuredHeight=" + measuredHeight+",baseline="+baseline+",每个字符宽度fo="+f0);
 
             invalidate();
 
@@ -424,7 +429,6 @@ public class RandomTextView extends AppCompatTextView{
         setPianyilian(rollType);
         setText(valueOrigin);
 
-        // TODO: 2018/5/28 test暂时注释
         handler.postDelayed(task, 266);
         auto = true;
 

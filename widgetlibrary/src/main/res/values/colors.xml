@@ -15,4 +15,14 @@
 
     <color name="bg_black">#2B2A33</color>
     <color name="progress_yellow">#FF8B22</color>
+    
+    
+    
+    
+    <color name="boom_flower_color1">#43b4e8</color>
+    <color name="boom_flower_color2">#f81b1b</color>
+    <color name="boom_flower_color3">#f69d5b</color>
+    <color name="boom_flower_color4">#009d4a</color>
+    <color name="boom_flower_color5">#ffe353</color>
+
 </resources>

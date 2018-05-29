@@ -1,29 +1,18 @@
 package com.sdk.dyq.widgetlibrary.bluepay;
 
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
-import android.graphics.RectF;
-import android.os.Handler;
-import android.os.Message;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.sdk.dyq.widgetlibrary.R;
-import java.util.Random;
-
-import static com.sdk.dyq.widgetlibrary.bluepay.BoomColorFlowerView.FLOWER_WIDTH;
 
 /**
  * 爆炸数字滚动控件
@@ -37,7 +26,7 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
     RandomTextView randomTextView;
     BoomColorFlowerView flowerView;
-
+    BoomColorFlowerView boom_view_left;
 
     int width;
     int height;
@@ -64,9 +53,54 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         randomTextView.setGravity(CENTER_HORIZONTAL);
 
         flowerView = (BoomColorFlowerView) container_view.findViewById(R.id.boom_view);
-//        flowerView.setStartArea(70);
+        boom_view_left = (BoomColorFlowerView) container_view.findViewById(R.id.boom_view_left);
+        changeBottomLayoutStartAnimation(boom_view_left);
+
+        float[] area = getStartArea(50);
+        flowerView.setStartArea(area[0],area[1]);
+        boom_view_left.setStartArea(area[0],area[1]);
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) flowerView.getLayoutParams();
+        lp.leftMargin = (int) area[0]*(-1);
+        flowerView.setLayoutParams(lp);
+
+        LinearLayout.LayoutParams left_lp = (LinearLayout.LayoutParams) boom_view_left.getLayoutParams();
+        left_lp.rightMargin = (int) (area[0]*(-1));
+        boom_view_left.setLayoutParams(left_lp);
+
         addView(container_view,new LinearLayout.LayoutParams(context,attrs));
     }
+    /**
+     *  底部布局从180旋转至90
+     */
+    private void changeBottomLayoutStartAnimation(View layout) {
+        layout.setVisibility(View.VISIBLE);
+        ObjectAnimator mOpenAnimator = ObjectAnimator.ofFloat(layout, "RotationY", 0, 180);
+//        mOpenAnimator.setDuration(500);
+        mOpenAnimator.start();
+    }
+
+
+    public float[] getStartArea(int textSizeSp){
+        float[] area = new float[2];
+        Paint p = new Paint();
+        p.setTextAlign(Paint.Align.LEFT);
+        p.setTextSize(sp2px(textSizeSp));
+        Rect mTextBounds = new Rect();
+        p.getTextBounds("0", 0, 1, mTextBounds);
+        area[1] = mTextBounds.height();
+        float widths[] = new float[1];
+        p.getTextWidths("0", widths);
+        area[0] = widths[0];
+        return area;
+    }
+
+    private int sp2px(float dpVal)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                dpVal, getResources().getDisplayMetrics());
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -88,10 +122,8 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
      */
     public void startBoomAnim(){
         if(randomTextView!=null){
-//            randomTextView.setTextSizeSP(190);
-            randomTextView.start("12345","11000",RandomTextView.FIRSTF_LAST);
+            randomTextView.start("12.3","11.0",RandomTextView.FIRSTF_LAST);
         }
-
     }
 
 
@@ -99,6 +131,9 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     public void onAnimFinish() {
         if(flowerView!=null){
             flowerView.startBoomFlower();
+        }
+        if(boom_view_left!=null){
+            boom_view_left.startBoomFlower();
         }
     }
 }

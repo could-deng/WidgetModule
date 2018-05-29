@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.sdk.dyq.widgetlibrary.bluepay.AutoScrollTextView;
 import com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView;
+import com.sdk.dyq.widgetlibrary.bluepay.BoomSoundPlayer;
 import com.sdk.dyq.widgetlibrary.bluepay.RandomTextView;
 import com.sdk.dyq.widgetlibrary.progress.DashBoardProgress;
 import com.sdk.dyq.widgetlibrary.progress.SegmentProgress;
@@ -82,24 +83,28 @@ public class ProgressTestActivity extends Activity {
 
 
 
-
+    private BoomSoundPlayer soundPlayer;
     public void onTickClick(View view){
-//        if(pay_circle!=null){
-//            pay_circle.completeDraw(PayResultCircle.STATE_TICK);
-//        }
-        mRandomTextView.start("123456","110000",RandomTextView.FIRSTF_LAST);
+        if(soundPlayer == null){
+            soundPlayer = new BoomSoundPlayer(ProgressTestActivity.this);
+        }
+        if (soundPlayer == null) return;
+        soundPlayer.playSingleSound(R.raw.pay_music_num_scroll);
+
     }
     public void onErrorClick(View view){
-//        if(pay_circle!=null){
-//            pay_circle.completeDraw(PayResultCircle.STATE_ERROR);
-//        }
+
         boomNumberView.startBoomAnim();
+//        if(soundPlayer == null){
+//            soundPlayer = new BoomSoundPlayer(ProgressTestActivity.this);
+//        }
+//        if (soundPlayer == null) return;
+//        soundPlayer.playSingleSound(R.raw.pay_music_flower_boom);
     }
     @Override
     protected void onResume() {
         super.onResume();
     }
-
 
     private int getState(long number) {
         final int states[] = {5, 10, 21, 42, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
@@ -109,4 +114,13 @@ public class ProgressTestActivity extends Activity {
         return 0;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (soundPlayer != null) {
+            soundPlayer.releaseResource();
+            soundPlayer = null;
+        }
+
+    }
 }
