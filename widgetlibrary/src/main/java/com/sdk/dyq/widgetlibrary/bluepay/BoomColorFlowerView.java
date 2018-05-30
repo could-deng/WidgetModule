@@ -272,12 +272,13 @@ public class BoomColorFlowerView extends View {
                 mHandler.sendEmptyMessageDelayed(1, TIME_REFRESH_DELAY);
             }else{
                 startBoom = false;
+                invalidate();
                 mHandler.removeCallbacksAndMessages(null);
             }
         }else {
-            if (startAreaHeight != 0 && startAreaWidth != 0) {
-                canvas.drawRect(0, 0, startAreaWidth, startAreaHeight, paint);
-            }
+//            if (startAreaHeight != 0 && startAreaWidth != 0) {
+//                canvas.drawRect(0, 0, startAreaWidth, startAreaHeight, paint);
+//            }
         }
     }
 

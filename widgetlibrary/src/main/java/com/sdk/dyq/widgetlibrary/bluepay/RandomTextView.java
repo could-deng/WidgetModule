@@ -10,9 +10,6 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -210,7 +207,9 @@ public class RandomTextView extends AppCompatTextView{
 //                    for(int i = 0;i<widths.length;i++){
 //                        result += widths[i];
 //                    }
-                    result = (int) Math.ceil(p.measureText(valueOrigin));
+                    float[] widthPer = new float[4];
+                    p.getTextWidths("0000", widthPer);
+                    result = (int) Math.ceil(widthPer[0]*valueOrigin.length());
 
                 }else{
                     p.getTextBounds("0", 0, 1, mTextBounds);
@@ -309,7 +308,7 @@ public class RandomTextView extends AppCompatTextView{
     //绘制
     private void drawNumber(Canvas canvas) {
         //todo test 画底线
-        canvas.drawLine(0,baseline/2,f0,baseline/2,p_test);
+//        canvas.drawLine(0,baseline/2,f0,baseline/2,p_test);
 
         for (int j = 0; j < numLength; j++) {//每列
             for (int i = 1; i < maxLine; i++) {//每行
