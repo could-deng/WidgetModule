@@ -59,7 +59,7 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         flowerView.setStartArea(area[0],area[1]);
         boom_view_left.setStartArea(area[0],area[1]);
 
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) flowerView.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) flowerView.getLayoutParams();
         lp.leftMargin = (int) area[0]*(-1);
         flowerView.setLayoutParams(lp);
 
