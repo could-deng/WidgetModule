@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,7 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
     public static final String TAG = "BoomNumberView";
 
-
+    private BoomSoundPlayer soundPlayer;
     RandomTextView randomTextView;
     BoomColorFlowerView flowerView;
     BoomColorFlowerView boom_view_left;
@@ -56,7 +55,7 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         boom_view_left = (BoomColorFlowerView) container_view.findViewById(R.id.boom_view_left);
         changeBottomLayoutStartAnimation(boom_view_left);
 
-        float[] area = getStartArea(50);
+        float[] area = getStartArea(32);
         flowerView.setStartArea(area[0],area[1]);
         boom_view_left.setStartArea(area[0],area[1]);
 
@@ -112,8 +111,13 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        Log.e(BoomNumberView.TAG,"!!!!!!!!!!!!!!draw");
+    }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(soundPlayer!=null){
+            soundPlayer.releaseResource();
+        }
     }
 
 
@@ -121,6 +125,11 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
      * 开始启动动画
      */
     public void startBoomAnim(){
+        if(soundPlayer == null){
+            soundPlayer = new BoomSoundPlayer(getContext());
+        }
+        if (soundPlayer == null) return;
+        soundPlayer.playSingleSound(R.raw.pay_music_num_scroll);
         if(randomTextView!=null){
             randomTextView.start("12.3","11.0",RandomTextView.FIRSTF_LAST);
         }
@@ -129,6 +138,11 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
     @Override
     public void onAnimFinish() {
+        if(soundPlayer == null){
+            soundPlayer = new BoomSoundPlayer(getContext());
+        }
+        if (soundPlayer == null) return;
+        soundPlayer.playSingleSound(R.raw.pay_music_flower_boom);
         if(flowerView!=null){
             flowerView.startBoomFlower();
         }

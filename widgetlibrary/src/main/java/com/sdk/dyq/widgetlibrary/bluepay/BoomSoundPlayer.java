@@ -4,7 +4,6 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
-
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -16,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class BoomSoundPlayer {
+    public static String TAG = "BoomSoundPlayer";
 
     private SoundPool mSoundPool;
     private Queue<Integer> mPlayedStreamId;
@@ -33,27 +33,24 @@ public class BoomSoundPlayer {
 
     private final SoundPool.OnLoadCompleteListener loadCompleteListener = new SoundPool.OnLoadCompleteListener() {
         @Override
-        public void onLoadComplete(final SoundPool sp, final int soundID,
+        public void onLoadComplete(final SoundPool sp, final int sampleId,
                                    int status) {
             if (status != 0)
                 return;
-//            addPreparedSoundId(soundID);
-//            setLoadIndex(getLoadIndex() + 1);
-//            if (getLoadIndex() >= getResIdCount()) {//如果全部资源播放完毕
-//                getThreadPoolExecutor().execute(myPlayRunnable);
-//            }
-            Log.e("SoundPlayerBoom","soundID="+soundID+",status="+status);
+            addPreparedSoundId(sampleId);
+            setLoadIndex(getLoadIndex() + 1);
+            if (getLoadIndex() >= getResIdCount()) {//如果全部资源播放完毕
+                getThreadPoolExecutor().execute(myPlayRunnable);
+            }
         }
     };
 
     private final Runnable myPlayRunnable = new Runnable() {
         public void run() {
-            while (true) {
                 int soundID = getPreparedSoundId();
                 int streamId = getSoundPool().play(soundID, 1, 1, 1, 0, 1);//播放
                 setPlayedIndex(getPlayedIndex() + 1);//设置播放完成的个数
                 getPlayedSoundQueue().offer(streamId);
-            }
         }
     };
 
@@ -77,10 +74,10 @@ public class BoomSoundPlayer {
     }
 
     private SoundPool getSoundPool() {
-        if (mSoundPool == null)
+        if (mSoundPool == null) {
             mSoundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC,
-                    0);
-
+                    5);
+        }
         return mSoundPool;
     }
     private synchronized void addPreparedSoundId(int soundId) {
@@ -107,7 +104,8 @@ public class BoomSoundPlayer {
         resIds[0] = resId;
         if (!setPlayResources(resIds))
             return;
-        getSoundPool().load(getContext(), resId, 1);
+        int ii = getSoundPool().load(getContext(), resIds[0], 1);
+        Log.e(TAG,"load,resId"+resId+",load()resourceId= "+ii);
     }
 
     private int getResIdCount() {
@@ -139,8 +137,8 @@ public class BoomSoundPlayer {
     private synchronized boolean setPlayResources(int[] resIds) {
         if (resIds == null)
             return false;
-//        stopAll();
-//        setResIdCount(resIds.length);
+        stopAll();
+        setResIdCount(resIds.length);
         getSoundPool().setOnLoadCompleteListener(loadCompleteListener);
         setLoadIndex(0);
         setPlayedIndex(0);
@@ -176,6 +174,7 @@ public class BoomSoundPlayer {
             mPlayedStreamId = new LinkedList<>();
         return mPlayedStreamId;
     }
+
     private ThreadPoolExecutor getThreadPoolExecutor() {
         if (controlSoundExecutor == null)
             controlSoundExecutor = new ThreadPoolExecutor(1, 1, 60,

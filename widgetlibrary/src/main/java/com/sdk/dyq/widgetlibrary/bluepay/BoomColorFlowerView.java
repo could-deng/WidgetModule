@@ -176,7 +176,6 @@ public class BoomColorFlowerView extends View {
 
     //endregion======控件的长宽========
 
-    boolean disappear = false;
     int alpha = 0;
     int animNowDuration = 0;
     @Override
@@ -184,11 +183,7 @@ public class BoomColorFlowerView extends View {
 //        Log.e(BoomNumberView.TAG, "draw(),getMeasureWidth"+getMeasuredWidth()+",getMeasureHeight"+getMeasuredHeight());
         canvas.translate(0, height / 3);
         if(startBoom) {
-            if(disappear){
-                return;
-            }
             t += 1f / ((float)TIME_Totally / TIME_REFRESH_DELAY);
-
             if(animNowDuration<Time_ALPHA_SHOW) {
                 alpha += 255f / ((float) Time_ALPHA_SHOW / TIME_REFRESH_DELAY);
                 if (alpha > 255f) {
@@ -200,8 +195,6 @@ public class BoomColorFlowerView extends View {
                     alpha = 0;
                 }
             }
-            Log.e(TAG,"alpha="+alpha);
-            paint.setAlpha(alpha);
 
             animNowDuration += ((float)TIME_Totally / TIME_REFRESH_DELAY);
 
@@ -209,59 +202,67 @@ public class BoomColorFlowerView extends View {
 
             float[] point0 = getFlowerCenter1();
             RectF rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,1,0),
+                    getPoint1Right(0,point0,1,0),
                     getPoint2Right(point0,1,0)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color1));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
             point0 = getFlowerCenter2();
             rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,1,-1),
+                    getPoint1Right(1,point0,1,-1),
                     getPoint2Right(point0,1,-1)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color2));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
             point0 = getFlowerCenter3();
             rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,1,1),
+                    getPoint1Right(2,point0,1,1),
                     getPoint2Right(point0,1,1)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color3));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
             point0 = getFlowerCenter4();
             rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,2,0),
+                    getPoint1Right(3,point0,2,0),
                     getPoint2Right(point0,2,0)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color4));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
 
             point0 = getFlowerCenter5();
             rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,2,-1),
+                    getPoint1Right(4,point0,2,-1),
                     getPoint2Right(point0,2,-1)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color5));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
             point0 = getFlowerCenter6();
             rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,3,-1),
+                    getPoint1Right(5,point0,3,-1),
                     getPoint2Right(point0,3,-1)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color5));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
             point0 = getFlowerCenter7();
             rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,3,0),
+                    getPoint1Right(6,point0,3,0),
                     getPoint2Right(point0,3,0)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color1));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
             point0 = getFlowerCenter8();
             rectF = getDrawRectf(getBezierPoint(t, point0,
-                    getPoint1Right(point0,3,1),
+                    getPoint1Right(7,point0,3,1),
                     getPoint2Right(point0,3,1)));
             paint.setColor(getResources().getColor(R.color.boom_flower_color1));
+            paint.setAlpha(alpha);
             canvas.drawRect(rectF, paint);
 
             //endregion====画八个矩形=====
@@ -406,16 +407,22 @@ public class BoomColorFlowerView extends View {
     /**
      * 根据point0获取point1
      * @param point0
+     * @param xLevel 1,2,3
+     * @param yLevel -1,0,1
      * @return
      */
-    private float[] getPoint1Right(float[] point0,int xLevel,int yLevel){
+    private float[] getPoint1Right(int index,float[] point0,int xLevel,int yLevel){
         float[] point1 = new float[2];
         //point1
-        point1[0] = point0[0] + (xLevel*startAreaWidth/4f);//+mRandom.nextFloat()*50;
-        point1[1] = point0[1] - (20)*xLevel;//+ random.nextInt(5) + random.nextFloat();
+        point1[0] = (point0[0] + xLevel*startAreaWidth)/2;//+mRandom.nextFloat()*50;
+        if(rectfRandom[index] == 0){
+            rectfRandom[index] = point0[1] - xLevel*10-mRandom.nextInt(10);
+        }
+        point1[1] = rectfRandom[index];//+ random.nextInt(5) + random.nextFloat();
         return point1;
-
     }
+    private float rectfRandom[] = new float[8];
+
 
     /**
      * 根据point0获取point2
@@ -427,7 +434,7 @@ public class BoomColorFlowerView extends View {
     private float[] getPoint2Right(float[] point0,int xLevel,int yLevel){
         float[] point2 = new float[2];
         //point2
-        point2[0] = point0[0]+xLevel*startAreaWidth/2;
+        point2[0] = point0[0]+xLevel*startAreaWidth;
         point2[1] = point0[1]+yLevel*startAreaHeight/2;
 
         return point2;

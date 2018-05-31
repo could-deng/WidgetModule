@@ -35,12 +35,8 @@ public class RandomTextView extends AppCompatTextView{
     //   当前字符串长度
     private int numLength = 0;
 
-    //   当前text
-    private String text;
+    private String text;//最终数字
     private String valueOrigin;//变化前数字
-//    private String valueAfter;//最终数字
-
-
 
     //滚动速度数组
     private int[] pianyilianglist;
@@ -73,7 +69,6 @@ public class RandomTextView extends AppCompatTextView{
 
     private Random random;
     private String[][] randomNum = new String[10][10];
-    private Paint p_test;
     private TextAnimCallBack callBack;
 
     public RandomTextView(Context context) {
@@ -90,14 +85,13 @@ public class RandomTextView extends AppCompatTextView{
                 randomNum[i][j] = "-1";
             }
         }
-        //            p = getPaint();
-        p = new Paint();
-        p.setTextAlign(Paint.Align.LEFT);
-        p.setTextSize(mTextSize);
-        p.setColor(mTextColor);
 
-        p_test = getPaint();
-        p_test.setColor(Color.RED);
+        p = getPaint();
+//        p = new Paint();
+        p.setTextAlign(Paint.Align.LEFT);
+//        p.setTextSize(mTextSize);
+//        p.setColor(mTextColor);
+
 
 
     }
@@ -124,7 +118,7 @@ public class RandomTextView extends AppCompatTextView{
                 break;
             case FIRSTF_LAST:
                 for (int i = 0; i < text.length(); i++) {
-                    pianyilianglist[i] = 10 + i;
+                    pianyilianglist[i] = 15 + i;
                 }
 
                 break;
@@ -153,9 +147,9 @@ public class RandomTextView extends AppCompatTextView{
 
     //region========控件的布局位置、长宽等等==============
 
-    private int mTextSize = sp2px(50);//默认的字体大小
+//    private int mTextSize = sp2px(50);//默认的字体大小
 
-    private int mTextColor = Color.BLUE;
+//    private int mTextColor = Color.BLUE;
 
     private Rect mTextBounds = new Rect();
     @Override
@@ -223,32 +217,32 @@ public class RandomTextView extends AppCompatTextView{
     }
 
 
-    public void setTextSizeDP(int mTextSize)
-    {
-        this.mTextSize = dp2px(mTextSize);
-        if(p!=null){
-            p.setTextSize(this.mTextSize);
-        }
-        requestLayout();
-        invalidate();
-    }
-    public void setTextSizeSP(int mTextSize){
-        this.mTextSize = sp2px(mTextSize);
-        if(p!=null){
-            p.setTextSize(this.mTextSize);
-        }
-        requestLayout();
-        invalidate();
-    }
+//    public void setTextSizeDP(int mTextSize)
+//    {
+//        this.mTextSize = dp2px(mTextSize);
+//        if(p!=null){
+//            p.setTextSize(this.mTextSize);
+//        }
+//        requestLayout();
+//        invalidate();
+//    }
+//    public void setTextSizeSP(int mTextSize){
+//        this.mTextSize = sp2px(mTextSize);
+//        if(p!=null){
+//            p.setTextSize(this.mTextSize);
+//        }
+//        requestLayout();
+//        invalidate();
+//    }
 
-    public void setTextColor(int mTextColor)
-    {
-        this.mTextColor = mTextColor;
-        if(p!=null){
-            p.setColor(mTextColor);
-        }
-        invalidate();
-    }
+//    public void setTextColor(int mTextColor)
+//    {
+//        this.mTextColor = mTextColor;
+//        if(p!=null){
+//            p.setColor(mTextColor);
+//        }
+//        invalidate();
+//    }
 
     private int dp2px(float dpVal)
     {
@@ -281,8 +275,8 @@ public class RandomTextView extends AppCompatTextView{
 //            baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
             baseline = measuredHeight;
 
-            p.setColor(mTextColor);
-            p.setTextSize(mTextSize);
+//            p.setColor(mTextColor);
+//            p.setTextSize(mTextSize);
 
             float[] widths = new float[4];
             p.getTextWidths("0000", widths);
@@ -339,11 +333,6 @@ public class RandomTextView extends AppCompatTextView{
                 if (overLine[j] == 0) {//滚动状态
                     drawText(canvas, String.valueOf(getRandomText(i,j)), 0 + f0 * j,
                             i * baseline + pianyiliangSum[j], p);
-//                    drawText(canvas, setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
-//                            i * baseline + pianyiliangSum[j], p);
-
-                    //canvas.drawText(setBack(arrayListText.get(j), maxLine - i - 1) + "", 0 + f0 * j,
-                    //        i * baseline + pianyiliangSum[j], p);
 
                 }else {//最后状态
                     //定位后画一次就好啦
@@ -356,15 +345,23 @@ public class RandomTextView extends AppCompatTextView{
                         // canvas.drawText(arrayListText.get(j) + "", 0 + f0 * j,
                         //        baseline, p);
                         if(i == maxLine-1 && j == 0){
-                            boolean ifEnd = true;
-                            for(int kk = 0 ;kk<overLine.length;kk++){
-                                if(overLine[kk]<2){
-                                    ifEnd = false;
-                                    break;
-                                }
-                            }
-                            if(ifEnd && callBack!=null){
+//                            boolean ifEnd = true;
+//                            for(int kk = 0 ;kk<overLine.length;kk++){
+//                                if(overLine[kk]<2){
+//                                    ifEnd = false;
+//                                    break;
+//                                }
+//                            }
+//                            if(ifEnd && callBack!=null){
+//                                callBack.onAnimFinish();
+//                            }
+                            if(callBack!=null) {
                                 callBack.onAnimFinish();
+                                String testStr = "";
+                                for(int qq =0;qq<overLine.length;qq++){
+                                    testStr+=overLine[qq]+",";
+                                }
+                                Log.e(TAG,"onAnimFinish(),overLine:"+testStr);
                             }
                         }
                     }
