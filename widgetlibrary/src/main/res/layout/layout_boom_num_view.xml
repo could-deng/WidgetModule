@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal">
-        <LinearLayout
+    android:orientation="horizontal">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
                 <com.sdk.dyq.widgetlibrary.bluepay.BoomColorFlowerView
                     android:id="@+id/boom_view_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true" />
+
                 <RelativeLayout
                     android:id="@+id/rl_num_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true">
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/boom_view_left"
+                    android:background="@color/progress_yellow">
 
                         <TextView
                             android:id="@+id/tv_num_b"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
                             android:text="฿"
-                            android:textSize="32sp"
-                            android:textColor="@android:color/black"/>
+                            android:layout_centerVertical="true"
+                            android:textColor="@android:color/black"
+                            android:textSize="32sp" />
+
                         <com.sdk.dyq.widgetlibrary.bluepay.RandomTextView
                             android:id="@+id/tv_random_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:gravity="center_horizontal"
-                            android:textColor="@android:color/black"
                             android:layout_toRightOf="@id/tv_num_b"
-                            android:textSize="32sp"/>
+                            android:layout_centerVertical="true"
+                            android:text="sadadsd"
+                            android:textColor="@android:color/black"
+                            android:textSize="32sp" />
+
                         <!--<ImageView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="10dp"-->
-                            <!--android:src="@drawable/boom_num_blur_img"-->
-                            <!--android:layout_alignTop="@id/tv_random_num"-->
-                            <!--android:layout_alignRight="@id/tv_random_num"-->
-                            <!--android:layout_alignLeft="@id/tv_num_b"/>-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="10dp"-->
+                        <!--android:src="@drawable/boom_num_blur_img"-->
+                        <!--android:layout_alignTop="@id/tv_random_num"-->
+                        <!--android:layout_alignRight="@id/tv_random_num"-->
+                        <!--android:layout_alignLeft="@id/tv_num_b"/>-->
                         <!--<ImageView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height= "10dp"-->
-                            <!--android:src="@drawable/boom_num_blur_img"-->
-                            <!--android:layout_alignBottom="@id/tv_random_num"-->
-                            <!--android:layout_alignLeft="@id/tv_num_b"-->
-                            <!--android:layout_alignRight="@id/tv_random_num"/>-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height= "10dp"-->
+                        <!--android:src="@drawable/boom_num_blur_img"-->
+                        <!--android:layout_alignBottom="@id/tv_random_num"-->
+                        <!--android:layout_alignLeft="@id/tv_num_b"-->
+                        <!--android:layout_alignRight="@id/tv_random_num"/>-->
                 </RelativeLayout>
-                <RelativeLayout
+
+                <TextView
+                    android:id="@+id/tv_num_right"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                        <com.sdk.dyq.widgetlibrary.bluepay.BoomColorFlowerView
-                            android:id="@+id/boom_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"/>
-                        <TextView
-                            android:id="@+id/tv_pay_result_price_original"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="bottom"
-                            android:layout_marginBottom="5dp"
-                            android:text="123"
-                            android:textColor="@color/money_color_red"
-                            android:textSize="12sp"
-                            android:visibility="visible"/>
-                </RelativeLayout>
-        </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/rl_num_container"
+                    android:layout_centerVertical="true"
+                    android:text="123"/>
+
+                <com.sdk.dyq.widgetlibrary.bluepay.BoomColorFlowerView
+                    android:id="@+id/boom_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/rl_num_container" />
+        </RelativeLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.sdk.dyq.widgetlibrary.bluepay;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,8 +10,11 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.sdk.dyq.widgetlibrary.R;
 
 /**
@@ -26,7 +30,8 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     RandomTextView randomTextView;
     BoomColorFlowerView flowerView;
     BoomColorFlowerView boom_view_left;
-
+    TextView tv_num_right;
+    float perSizeArea;//一个字符的宽度
     int width;
     int height;
 
@@ -58,14 +63,18 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         float[] area = getStartArea(32);
         flowerView.setStartArea(area[0],area[1]);
         boom_view_left.setStartArea(area[0],area[1]);
+        perSizeArea = area[0];
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) flowerView.getLayoutParams();
         lp.leftMargin = (int) area[0]*(-1);
         flowerView.setLayoutParams(lp);
 
-        LinearLayout.LayoutParams left_lp = (LinearLayout.LayoutParams) boom_view_left.getLayoutParams();
+        RelativeLayout.LayoutParams left_lp = (RelativeLayout.LayoutParams) boom_view_left.getLayoutParams();
         left_lp.rightMargin = (int) (area[0]*(-1));
         boom_view_left.setLayoutParams(left_lp);
+
+
+        tv_num_right = (TextView)( container_view.findViewById(R.id.tv_num_right));
 
         addView(container_view,new LinearLayout.LayoutParams(context,attrs));
     }
@@ -106,7 +115,6 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         super.onSizeChanged(w, h, oldw, oldh);
         width = w;
         height = h;
-
     }
 
     @Override
@@ -131,23 +139,37 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         if (soundPlayer == null) return;
         soundPlayer.playSingleSound(R.raw.pay_music_num_scroll);
         if(randomTextView!=null){
-            randomTextView.start("12.3","11.0",RandomTextView.FIRSTF_LAST);
+            randomTextView.start("10","9",RandomTextView.FIRSTF_LAST);
         }
+    }
+    public void slowlyShowNumRight(){
+        if(tv_num_right!=null){
+            tv_num_right.setText("12.3");
+        }
+        RelativeLayout.LayoutParams tv_num_right_lp = (RelativeLayout.LayoutParams) tv_num_right.getLayoutParams();
+        tv_num_right_lp.leftMargin = (int) (perSizeArea*(-1));
+        tv_num_right.setLayoutParams(tv_num_right_lp);
+
+        final ValueAnimator animator1 = ObjectAnimator.ofFloat(tv_num_right, "alpha",0,1);//淡出效果
+        animator1.setDuration(1000);
+        animator1.setInterpolator(new AccelerateInterpolator());
+        animator1.start();
     }
 
 
     @Override
     public void onAnimFinish() {
-        if(soundPlayer == null){
-            soundPlayer = new BoomSoundPlayer(getContext());
-        }
-        if (soundPlayer == null) return;
-        soundPlayer.playSingleSound(R.raw.pay_music_flower_boom);
-        if(flowerView!=null){
-            flowerView.startBoomFlower();
-        }
-        if(boom_view_left!=null){
-            boom_view_left.startBoomFlower();
-        }
+//        if(soundPlayer == null){
+//            soundPlayer = new BoomSoundPlayer(getContext());
+//        }
+//        if (soundPlayer == null) return;
+//        soundPlayer.playSingleSound(R.raw.pay_music_flower_boom);
+//        if(flowerView!=null){
+//            flowerView.startBoomFlower();
+//        }
+//        if(boom_view_left!=null){
+//            boom_view_left.startBoomFlower();
+//        }
+        slowlyShowNumRight();
     }
 }

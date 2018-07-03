@@ -28,6 +28,9 @@ public class ProgressTestActivity extends Activity {
     private RandomTextView mRandomTextView;
     private BoomNumberView boomNumberView;
 
+    private com.sdk.dyq.widgetlibrary.TextView.RandomTextView tv_random_num_standard;
+    private int[] pianyiliang = new int[6];
+
     private AutoScrollTextView mAutoScrollViewNumberView;
 
     @Override
@@ -58,6 +61,16 @@ public class ProgressTestActivity extends Activity {
             }
         });
 
+//        tv_random_num_standard = (com.sdk.dyq.widgetlibrary.TextView.RandomTextView) findViewById(R.id.tv_random_num_standard);
+//        pianyiliang[0] = 10;
+//        pianyiliang[1] = 9;
+//        pianyiliang[2] = 8;
+//        pianyiliang[3] = 7;
+//        pianyiliang[4] = 6;
+//        pianyiliang[5] = 5;
+//        tv_random_num_standard.setPianyilian(pianyiliang);
+//        tv_random_num_standard.start();
+
 //        initScrollView();
     }
 //    private void initScrollView(){
@@ -85,21 +98,14 @@ public class ProgressTestActivity extends Activity {
 
     private BoomSoundPlayer soundPlayer;
     public void onTickClick(View view){
-        if(soundPlayer == null){
-            soundPlayer = new BoomSoundPlayer(ProgressTestActivity.this);
-        }
-        if (soundPlayer == null) return;
-        soundPlayer.playSingleSound(R.raw.pay_music_num_scroll);
+//        tv_random_num_standard.setText("876543");
+//        tv_random_num_standard.setPianyilian(RandomTextView.ALL);
+//        tv_random_num_standard.start();
 
     }
     public void onErrorClick(View view){
 
         boomNumberView.startBoomAnim();
-//        if(soundPlayer == null){
-//            soundPlayer = new BoomSoundPlayer(ProgressTestActivity.this);
-//        }
-//        if (soundPlayer == null) return;
-//        soundPlayer.playSingleSound(R.raw.pay_music_flower_boom);
     }
     @Override
     protected void onResume() {

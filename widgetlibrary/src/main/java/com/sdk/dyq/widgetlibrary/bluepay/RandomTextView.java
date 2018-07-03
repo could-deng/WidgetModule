@@ -70,6 +70,7 @@ public class RandomTextView extends AppCompatTextView{
     private Random random;
     private String[][] randomNum = new String[10][10];
     private TextAnimCallBack callBack;
+    private boolean finishOnce;
 
     public RandomTextView(Context context) {
         this(context,null);
@@ -87,13 +88,7 @@ public class RandomTextView extends AppCompatTextView{
         }
 
         p = getPaint();
-//        p = new Paint();
         p.setTextAlign(Paint.Align.LEFT);
-//        p.setTextSize(mTextSize);
-//        p.setColor(mTextColor);
-
-
-
     }
 
     public void setCallBack(TextAnimCallBack callBack){
@@ -104,8 +99,6 @@ public class RandomTextView extends AppCompatTextView{
 
     //按系统提供的类型滚动
     public void setPianyilian(int pianyiliangTpye) {
-//        this.text = getText().toString();
-
         pianyiliangSum = new int[text.length()];
         overLine = new int[text.length()];
         pianyilianglist = new int[text.length()];
@@ -133,9 +126,6 @@ public class RandomTextView extends AppCompatTextView{
 
     //自定义滚动速度数组
     public void setPianyilian(int[] list) {
-//        this.text = getText().toString();
-//        this.text = valueAfter;
-
         pianyiliangSum = new int[list.length];
         overLine = new int[list.length];
         pianyilianglist = list;
@@ -147,17 +137,15 @@ public class RandomTextView extends AppCompatTextView{
 
     //region========控件的布局位置、长宽等等==============
 
-//    private int mTextSize = sp2px(50);//默认的字体大小
-
-//    private int mTextColor = Color.BLUE;
-
     private Rect mTextBounds = new Rect();
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = measureWidth(widthMeasureSpec);
         int height = measureHeight(heightMeasureSpec);
         setMeasuredDimension(width, height);
+
     }
 
     private int measureHeight(int measureSpec)
@@ -177,7 +165,7 @@ public class RandomTextView extends AppCompatTextView{
                 break;
         }
         result = mode == MeasureSpec.AT_MOST ? Math.min(result, val) : result;
-        return result + getPaddingTop() + getPaddingBottom();
+        return result + getPaddingTop() + getPaddingBottom()+20;
     }
 
     private int measureWidth(int measureSpec)
@@ -193,14 +181,6 @@ public class RandomTextView extends AppCompatTextView{
             case MeasureSpec.AT_MOST:
             case MeasureSpec.UNSPECIFIED:
                 if(valueOrigin!=null) {
-//                    p.getTextBounds(valueOrigin, 0, valueOrigin.length(), mTextBounds);
-//                    result = mTextBounds.width();
-                    result = 0;
-//                    float[] widths = new float[valueOrigin.length()];
-//                    p.getTextWidths(valueOrigin, widths);
-//                    for(int i = 0;i<widths.length;i++){
-//                        result += widths[i];
-//                    }
                     float[] widthPer = new float[4];
                     p.getTextWidths("0000", widthPer);
                     result = (int) Math.ceil(widthPer[0]*valueOrigin.length());
@@ -264,46 +244,26 @@ public class RandomTextView extends AppCompatTextView{
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        Log.d(TAG,"draw");
         if (firstIn) {
             firstIn = false;
             super.onDraw(canvas);
 
-
-//            Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
+            Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
             measuredHeight = getMeasuredHeight();
-//            baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
-            baseline = measuredHeight;
-
-//            p.setColor(mTextColor);
-//            p.setTextSize(mTextSize);
+            baseline = (measuredHeight - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+//            baseline = measuredHeight;
 
             float[] widths = new float[4];
             p.getTextWidths("0000", widths);
             f0 = widths[0];//获取第一个字符的宽度
 
-//            Log.d(TAG, "onDraw(),getMeasuredHeight=" + measuredHeight+",baseline="+baseline+",每个字符宽度fo="+f0);
-
             invalidate();
-
         }
         drawNumber(canvas);
-//        if (auto) {
-//            for (int j = 0; j < numLength; j++) {
-//
-//                pianyiliangSum[j] -= pianyilianglist[j];
-//                postInvalidateDelayed(17);
-//            }
-
-
-        //     }
     }
 
     //绘制
     private void drawNumber(Canvas canvas) {
-        //todo test 画底线
-//        canvas.drawLine(0,baseline/2,f0,baseline/2,p_test);
-
         for (int j = 0; j < numLength; j++) {//每列
             for (int i = 1; i < maxLine; i++) {//每行
                 //检查当前字符位，是不是最后一个
@@ -355,13 +315,14 @@ public class RandomTextView extends AppCompatTextView{
 //                            if(ifEnd && callBack!=null){
 //                                callBack.onAnimFinish();
 //                            }
-                            if(callBack!=null) {
+                            if(callBack!=null && !finishOnce) {
                                 callBack.onAnimFinish();
-                                String testStr = "";
-                                for(int qq =0;qq<overLine.length;qq++){
-                                    testStr+=overLine[qq]+",";
-                                }
-                                Log.e(TAG,"onAnimFinish(),overLine:"+testStr);
+                                finishOnce = true;
+//                                String testStr = "";
+//                                for(int qq =0;qq<overLine.length;qq++){
+//                                    testStr+=overLine[qq]+",";
+//                                }
+//                                Log.e(TAG,"onAnimFinish(),overLine:"+testStr);
                             }
                         }
                     }
@@ -455,6 +416,7 @@ public class RandomTextView extends AppCompatTextView{
     public void destroy() {
         Log.e(TAG,"销毁RandomTextView");
         auto = false;
+        finishOnce = false;
         handler.removeCallbacks(task);
 
     }
@@ -501,4 +463,5 @@ public class RandomTextView extends AppCompatTextView{
     public interface TextAnimCallBack{
         void onAnimFinish();
     }
+
 }

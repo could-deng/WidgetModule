@@ -50,6 +50,11 @@
 
         </com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView>
 
+        <!--<com.sdk.dyq.widgetlibrary.TextView.RandomTextView-->
+            <!--android:id="@+id/tv_random_num_standard"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="40sp"/>-->
 
         <!--<com.sdk.dyq.widgetlibrary.bluepay.AutoScrollTextView-->
             <!--android:id="@+id/id_scroll_text"-->
