@@ -2,13 +2,11 @@ package com.sdk.dyq.widgetlibrary.bluepay;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import java.util.ArrayList;
 import java.util.Random;
@@ -99,6 +97,8 @@ public class RandomTextView extends AppCompatTextView{
 
     //按系统提供的类型滚动
     public void setPianyilian(int pianyiliangTpye) {
+//        this.text = getText().toString();
+
         pianyiliangSum = new int[text.length()];
         overLine = new int[text.length()];
         pianyilianglist = new int[text.length()];
@@ -126,6 +126,9 @@ public class RandomTextView extends AppCompatTextView{
 
     //自定义滚动速度数组
     public void setPianyilian(int[] list) {
+//        this.text = getText().toString();
+//        this.text = valueAfter;
+
         pianyiliangSum = new int[list.length];
         overLine = new int[list.length];
         pianyilianglist = list;
@@ -141,11 +144,9 @@ public class RandomTextView extends AppCompatTextView{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = measureWidth(widthMeasureSpec);
         int height = measureHeight(heightMeasureSpec);
         setMeasuredDimension(width, height);
-
     }
 
     private int measureHeight(int measureSpec)
@@ -239,14 +240,12 @@ public class RandomTextView extends AppCompatTextView{
 
     //endregion========控件的布局位置、长宽等等==============
 
-
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         if (firstIn) {
             firstIn = false;
             super.onDraw(canvas);
+
 
             Paint.FontMetricsInt fontMetrics = p.getFontMetricsInt();
             measuredHeight = getMeasuredHeight();
@@ -256,7 +255,6 @@ public class RandomTextView extends AppCompatTextView{
             float[] widths = new float[4];
             p.getTextWidths("0000", widths);
             f0 = widths[0];//获取第一个字符的宽度
-
             invalidate();
         }
         drawNumber(canvas);
@@ -414,7 +412,6 @@ public class RandomTextView extends AppCompatTextView{
     private static final Handler handler = new Handler();
 
     public void destroy() {
-        Log.e(TAG,"销毁RandomTextView");
         auto = false;
         finishOnce = false;
         handler.removeCallbacks(task);
@@ -454,6 +451,13 @@ public class RandomTextView extends AppCompatTextView{
      * @param p
      */
     private void drawText(Canvas mCanvas, String text, float x, float y, Paint p) {
+        if(text.equals(".")){
+            float[] dotWidth = new float[1];
+            p.getTextWidths(".",dotWidth);
+            if(dotWidth[0]!=0f) {
+                x = x + f0 / 2 - dotWidth[0] / 2;
+            }
+        }
         if (y >= -measuredHeight && y <= 2 * measuredHeight) {
             mCanvas.drawText(text + "", x, y, p);
         }
@@ -463,5 +467,4 @@ public class RandomTextView extends AppCompatTextView{
     public interface TextAnimCallBack{
         void onAnimFinish();
     }
-
 }

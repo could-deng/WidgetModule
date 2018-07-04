@@ -105,7 +105,7 @@ public class ProgressTestActivity extends Activity {
     }
     public void onErrorClick(View view){
 
-        boomNumberView.startBoomAnim();
+        boomNumberView.startBoomAnim("10.00","9.70","10.00");
     }
     @Override
     protected void onResume() {

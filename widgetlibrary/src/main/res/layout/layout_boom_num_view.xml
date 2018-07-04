@@ -30,8 +30,7 @@
                             android:layout_height="wrap_content"
                             android:text="฿"
                             android:layout_centerVertical="true"
-                            android:textColor="@android:color/black"
-                            android:textSize="32sp" />
+                            android:textColor="@android:color/black" />
 
                         <com.sdk.dyq.widgetlibrary.bluepay.RandomTextView
                             android:id="@+id/tv_random_num"
@@ -40,8 +39,7 @@
                             android:layout_toRightOf="@id/tv_num_b"
                             android:layout_centerVertical="true"
                             android:text="sadadsd"
-                            android:textColor="@android:color/black"
-                            android:textSize="32sp" />
+                            android:textColor="@android:color/black" />
 
                         <!--<ImageView-->
                         <!--android:layout_width="wrap_content"-->
