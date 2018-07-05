@@ -4,7 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.TextUtils;
@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.sdk.dyq.widgetlibrary.R;
+import java.text.DecimalFormat;
 
 
 /**
@@ -30,17 +31,21 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     public static final String TAG = "BoomNumberView";
 
     private static float NumTextSizeDefault = 32F;
+    private static int ViewColorDefault = Color.BLACK;
     private float numTextSize;//字体大小
+    private int viewColor;
 
     private BoomSoundPlayer soundPlayer;
     RandomTextView randomTextView;
+    RandomTextView randomTextView2;
     BoomColorFlowerView flowerView;
     BoomColorFlowerView boom_view_left;
-    TextView tv_num_b;
-    TextView tv_num_right;
+    TextView tv_num_b;//左边的B符号
+    TextView tv_num_right;//右边的划横线的数字
+    TextView tv_dot;
+
+    private String originRightNum;//右边划横线的数字
     float perSizeArea;//一个字符的宽度
-    private String afterNum;
-    private String origin;
     int width;
     int height;
     private int charDifNum=0;//数字变化前后的字符相差数
@@ -61,19 +66,30 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     private void init(Context context,AttributeSet attrs){
         TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.BoomNumberView);
         numTextSize = ta.getDimension(R.styleable.BoomNumberView_num_size,NumTextSizeDefault);
+        viewColor = ta.getColor(R.styleable.BoomNumberView_view_color, ViewColorDefault);
 
         View container_view = LayoutInflater.from(context).inflate(R.layout.layout_boom_num_view,null);
+        tv_dot = (TextView) container_view.findViewById(R.id.tv_dot);
         randomTextView = (RandomTextView) container_view.findViewById(R.id.tv_random_num);
+        randomTextView2 = (RandomTextView) container_view.findViewById(R.id.tv_random_num2);
         if(randomTextView!=null){
             randomTextView.setCallBack(this);
         }
         randomTextView.setGravity(CENTER_HORIZONTAL);
+        randomTextView2.setGravity(CENTER_HORIZONTAL);
 
         tv_num_b = (TextView) container_view.findViewById(R.id.tv_num_b);
 
 
         tv_num_b.setTextSize(TypedValue.COMPLEX_UNIT_PX,numTextSize);
         randomTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,numTextSize);
+        randomTextView2.setTextSize(TypedValue.COMPLEX_UNIT_PX,numTextSize);
+        tv_dot.setTextSize(TypedValue.COMPLEX_UNIT_PX,numTextSize);
+
+        tv_dot.setTextColor(viewColor);
+        tv_num_b.setTextColor(viewColor);
+        randomTextView.setTextColor(viewColor);
+        randomTextView2.setTextColor(viewColor);
 
         //左右两边烟花view
         flowerView = (BoomColorFlowerView) container_view.findViewById(R.id.boom_view);
@@ -93,8 +109,8 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
 
 
         //划横线的原价
-        tv_num_right = (TextView)( container_view.findViewById(R.id.tv_num_right));
-        tv_num_right.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );
+        tv_num_right = (TextView)(container_view.findViewById(R.id.tv_num_right));
+        tv_num_right.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG);
 
         addView(container_view,new LinearLayout.LayoutParams(context,attrs));
     }
@@ -107,7 +123,11 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         mOpenAnimator.start();
     }
 
-
+    /**
+     * 获取烟花控件的范围
+     * @param textSizePx
+     * @return
+     */
     public float[] getStartArea(float textSizePx){
         float[] area = new float[2];
         Paint p = new Paint();
@@ -132,6 +152,11 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if(soundPlayer!=null){
@@ -139,27 +164,36 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         }
     }
 
+    public void departNumToTwo(String numOrigin,String numAfter,String origin){
+        originRightNum = origin;
 
-    /**
-     * 开始启动动画
-     * @param origin
-     * @param afterNum
-     * @param txtNumRight
-     */
-    public void startBoomAnim(String origin,String afterNum,String txtNumRight){
+        DecimalFormat fnum = new DecimalFormat(".00");
+        float o1 = Float.parseFloat(numOrigin);
+        String formatedNumOrigin = fnum.format(o1);
+        float o2 = Float.parseFloat(numAfter);
+        String formatedNumAfter = fnum.format(o2);
+
+        String num1Origin = formatedNumOrigin.substring(0,formatedNumOrigin.indexOf("."));
+        String num2Origin = formatedNumOrigin.substring(formatedNumOrigin.indexOf(".")+1,formatedNumOrigin.length());
+
+        String num1After = formatedNumAfter.substring(0,formatedNumAfter.indexOf("."));
+        String num2After = formatedNumAfter.substring(formatedNumAfter.indexOf(".")+1,formatedNumAfter.length());
+
+
         String strDif = "";
-        charDifNum = origin.length()-afterNum.length();
+        charDifNum = num1Origin.length()-num1After.length();
         if(charDifNum>0){
             for (int i = 0;i<charDifNum;i++){
                 strDif += " ";
             }
-            afterNum = strDif+afterNum;
+            num1After = strDif+num1After;
         }else if(charDifNum<0){
             for (int i = 0;i<(-charDifNum);i++){
                 strDif += " ";
             }
-            origin = strDif+origin;
+            num1Origin = strDif+num1Origin;
         }
+
 
         Log.e(TAG,"startBoomAnim()");
         if(soundPlayer == null){
@@ -168,16 +202,17 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
         if (soundPlayer == null) return;
 //        soundPlayer.playSingleSound(R.raw.pay_music_num_scroll);
         if(randomTextView!=null){
-            randomTextView.start(origin,afterNum,RandomTextView.FIRSTF_LAST);
+            randomTextView.start(num1Origin,num1After,RandomTextView.FIRSTF_LAST,0);
         }
-        this.afterNum = afterNum;
-        this.origin = txtNumRight;
-    }
+        if(randomTextView2!=null){
+            randomTextView2.start(num2Origin,num2After,RandomTextView.FIRSTF_LAST,2);
+        }
 
+
+    }
 
     @Override
     public void onAnimFinish() {
-//        BlueLog.e(TAG,"onAnimFinish()");
         adjustLocation();
         if(soundPlayer == null){
             soundPlayer = new BoomSoundPlayer(getContext());
@@ -196,13 +231,8 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
      * 逐渐出现左边的划横线的原价
      */
     public void slowlyShowNumRight(){
-        if(tv_num_right!=null && (origin.length()-afterNum.length()>0)){
-            RelativeLayout.LayoutParams tv_num_right_lp = (RelativeLayout.LayoutParams) tv_num_right.getLayoutParams();
-            tv_num_right_lp.leftMargin = (int) (perSizeArea*(-1)*(origin.length()-afterNum.length()));
-            tv_num_right.setLayoutParams(tv_num_right_lp);
-        }
-        if(tv_num_right!=null && !TextUtils.isEmpty(origin)){
-//            tv_num_right.setText(String.format(getContext().getString(R.string.pay_money_text),origin));
+        if(tv_num_right!=null && !TextUtils.isEmpty(originRightNum)){
+//            tv_num_right.setText(String.format(getContext().getString(R.string.pay_money_text),originRightNum));
         }
         final ValueAnimator animator1 = ObjectAnimator.ofFloat(tv_num_right, "alpha",0,1);//淡出效果
         animator1.setDuration(1000);
@@ -211,15 +241,15 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     }
 
     /**
-     * 如果变化前后的数字长度有差，则调整B的位置
+     * 如果变化前后的数字长度有差，则调整位置
      */
     private void adjustLocation(){
         if(charDifNum!=0) {
             float[] perWidth = new float[1];
             randomTextView.getPaint().getTextWidths("0", perWidth);
-            RelativeLayout.LayoutParams tv_num_b_lp = (LayoutParams) tv_num_b.getLayoutParams();
-            tv_num_b_lp.rightMargin = (int) ((-1) * (charDifNum * perWidth[0]));
-            tv_num_b.setLayoutParams(tv_num_b_lp);
+            LinearLayout.LayoutParams randomTextView_lp = (LinearLayout.LayoutParams) randomTextView.getLayoutParams();
+            randomTextView_lp.leftMargin = (int) ((-1) * (charDifNum * perWidth[0]));
+            randomTextView.setLayoutParams(randomTextView_lp);
         }
     }
 }

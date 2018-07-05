@@ -16,13 +16,14 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_num_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/boom_view_left"
-                    android:background="@color/progress_yellow">
+                    android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/tv_num_b"
@@ -30,40 +31,34 @@
                             android:layout_height="wrap_content"
                             android:text="฿"
                             android:layout_centerVertical="true"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@color/main_2d2f3b" />
 
                         <com.sdk.dyq.widgetlibrary.bluepay.RandomTextView
                             android:id="@+id/tv_random_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/tv_num_b"
-                            android:layout_centerVertical="true"
-                            android:text="sadadsd"
-                            android:textColor="@android:color/black" />
-
-                        <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="10dp"-->
-                        <!--android:src="@drawable/boom_num_blur_img"-->
-                        <!--android:layout_alignTop="@id/tv_random_num"-->
-                        <!--android:layout_alignRight="@id/tv_random_num"-->
-                        <!--android:layout_alignLeft="@id/tv_num_b"/>-->
-                        <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height= "10dp"-->
-                        <!--android:src="@drawable/boom_num_blur_img"-->
-                        <!--android:layout_alignBottom="@id/tv_random_num"-->
-                        <!--android:layout_alignLeft="@id/tv_num_b"-->
-                        <!--android:layout_alignRight="@id/tv_random_num"/>-->
-                </RelativeLayout>
+                            android:textColor="@color/main_2d2f3b" />
+                        <TextView
+                            android:id="@+id/tv_dot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="."/>
+                        <com.sdk.dyq.widgetlibrary.bluepay.RandomTextView
+                            android:id="@+id/tv_random_num2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/main_2d2f3b" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_num_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/rl_num_container"
-                    android:layout_centerVertical="true"
-                    android:text="123"/>
+                    android:textColor="@color/money_color_red"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_centerVertical="true"/>
 
                 <com.sdk.dyq.widgetlibrary.bluepay.BoomColorFlowerView
                     android:id="@+id/boom_view"

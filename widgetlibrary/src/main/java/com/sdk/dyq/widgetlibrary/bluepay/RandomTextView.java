@@ -119,7 +119,32 @@ public class RandomTextView extends AppCompatTextView{
                 for (int i = 0; i < text.length(); i++) {
                     pianyilianglist[i] = 15;
                 }
+                break;
+        }
+    }
+    public void setPianyilian(int pianyiliangTpye,int diviationSize) {
+//        this.text = getText().toString();
 
+        pianyiliangSum = new int[text.length()];
+        overLine = new int[text.length()];
+        pianyilianglist = new int[text.length()];
+        switch (pianyiliangTpye) {
+            case FIRSTF_FIRST:
+                for (int i = 0; i < text.length(); i++) {
+                    pianyilianglist[i] = 10 - i - diviationSize;
+                }
+
+                break;
+            case FIRSTF_LAST:
+                for (int i = 0; i < text.length(); i++) {
+                    pianyilianglist[i] = (diviationSize)+15 + i;
+                }
+
+                break;
+            case ALL:
+                for (int i = 0; i < text.length(); i++) {
+                    pianyilianglist[i] = 15;
+                }
                 break;
         }
     }
@@ -148,6 +173,7 @@ public class RandomTextView extends AppCompatTextView{
         int height = measureHeight(heightMeasureSpec);
         setMeasuredDimension(width, height);
     }
+
 
     private int measureHeight(int measureSpec)
     {
@@ -372,8 +398,11 @@ public class RandomTextView extends AppCompatTextView{
     /**
      * 开始滚动
      * @param originNum
+     * @param afterNum
+     * @param rollType
+     * @param diviationSize 由于以小数点为中心拆分位两边，该字段位偏移位，保证每位的偏移量连贯性
      */
-    public void start(String originNum , String afterNum, int rollType){
+    public void start(String originNum , String afterNum, int rollType,int diviationSize){
         this.valueOrigin = originNum;
         this.text = afterNum ;
         numLength = text.length();
@@ -381,7 +410,7 @@ public class RandomTextView extends AppCompatTextView{
         arrayListText = getList(text);
         arrayListOriginText = getList(valueOrigin);
 
-        setPianyilian(rollType);
+        setPianyilian(rollType,diviationSize);
         setText(valueOrigin);
 
         handler.postDelayed(task, 266);
@@ -451,13 +480,6 @@ public class RandomTextView extends AppCompatTextView{
      * @param p
      */
     private void drawText(Canvas mCanvas, String text, float x, float y, Paint p) {
-        if(text.equals(".")){
-            float[] dotWidth = new float[1];
-            p.getTextWidths(".",dotWidth);
-            if(dotWidth[0]!=0f) {
-                x = x + f0 / 2 - dotWidth[0] / 2;
-            }
-        }
         if (y >= -measuredHeight && y <= 2 * measuredHeight) {
             mCanvas.drawText(text + "", x, y, p);
         }

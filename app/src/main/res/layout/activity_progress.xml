@@ -48,7 +48,8 @@
             android:id="@+id/boomNumberView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:num_size="32sp">
+            app:num_size="32sp"
+            app:view_color="@color/main_2d2f3b">
 
         </com.sdk.dyq.widgetlibrary.bluepay.BoomNumberView>
 
@@ -62,6 +63,5 @@
             <!--android:id="@+id/id_scroll_text"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content" />-->
-
     </LinearLayout>
 </ScrollView>

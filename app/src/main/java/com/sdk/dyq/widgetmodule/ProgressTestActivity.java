@@ -101,11 +101,11 @@ public class ProgressTestActivity extends Activity {
 //        tv_random_num_standard.setText("876543");
 //        tv_random_num_standard.setPianyilian(RandomTextView.ALL);
 //        tv_random_num_standard.start();
-
     }
     public void onErrorClick(View view){
 
-        boomNumberView.startBoomAnim("10.00","9.70","10.00");
+//        boomNumberView.startBoomAnim("10.00","9.70","10.00");
+        boomNumberView.departNumToTwo("111.1","9.7","10.00");
     }
     @Override
     protected void onResume() {

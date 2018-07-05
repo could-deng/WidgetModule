@@ -34,6 +34,7 @@
 
     <declare-styleable name="BoomNumberView">
         <attr name="num_size" format="dimension"/>
+        <attr name="view_color" format="color"/>
     </declare-styleable>
 
 </resources>
