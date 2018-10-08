@@ -167,7 +167,7 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
     public void departNumToTwo(String numOrigin,String numAfter,String origin){
         originRightNum = origin;
 
-        DecimalFormat fnum = new DecimalFormat(".00");
+        DecimalFormat fnum = new DecimalFormat("0.00");
         float o1 = Float.parseFloat(numOrigin);
         String formatedNumOrigin = fnum.format(o1);
         float o2 = Float.parseFloat(numAfter);
@@ -200,12 +200,18 @@ public class BoomNumberView extends RelativeLayout implements RandomTextView.Tex
             soundPlayer = new BoomSoundPlayer(getContext());
         }
         if (soundPlayer == null) return;
-//        soundPlayer.playSingleSound(R.raw.pay_music_num_scroll);
+        soundPlayer.playSingleSound(R.raw.pay_music_num_scroll);
         if(randomTextView!=null){
             randomTextView.start(num1Origin,num1After,RandomTextView.FIRSTF_LAST,0);
         }
-        if(randomTextView2!=null){
-            randomTextView2.start(num2Origin,num2After,RandomTextView.FIRSTF_LAST,2);
+
+        if(num2Origin.equals("00") && num2After.equals("00") && randomTextView2 != null){
+            tv_dot.setVisibility(GONE);
+            randomTextView2.setVisibility(GONE);
+        }else {
+            if (randomTextView2 != null) {
+                randomTextView2.start(num2Origin, num2After, RandomTextView.FIRSTF_LAST, 2);
+            }
         }
 
 
