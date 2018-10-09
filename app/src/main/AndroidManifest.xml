@@ -15,11 +15,7 @@
 
         <activity android:name=".ProgressTestActivity"
             android:launchMode="singleInstance">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".OptionMenuActivity"/>
         <activity android:name=".WaveViewActivity"
@@ -27,9 +23,15 @@
 
             </activity>
         <activity android:name=".BlueActivity">
-
         </activity>
 
+        <activity android:name=".HandShakerAct">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

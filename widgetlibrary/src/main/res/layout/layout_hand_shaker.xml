@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/tv_hand_shaker_circle_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_hand_shake_gray_bg"
+        android:layout_centerInParent="true"/>
+    <ImageView
+        android:id="@+id/iv_hand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_hand_shaker"
+        android:layout_centerInParent="true"/>
+    <ImageView
+        android:id="@+id/iv_voucher_left_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_voucher_left"
+        />
+    <ImageView
+        android:id="@+id/iv_voucher_left_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_voucher_left"
+        />
+    <ImageView
+        android:id="@+id/iv_voucher_right_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_voucher_right"
+        />
+    <ImageView
+        android:id="@+id/iv_voucher_right_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_voucher_right" />
+
+    <!--金币-->
+    <ImageView
+        android:id="@+id/iv_coin_right_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_coin_r1"
+        />
+    <ImageView
+        android:id="@+id/iv_coin_right_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_coin_r3"
+        />
+    <ImageView
+        android:id="@+id/iv_coin_right_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_coin_r2"
+        />
+    <ImageView
+        android:id="@+id/iv_coin_left_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_coin_l1" />
+    <ImageView
+        android:id="@+id/iv_coin_left_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_coin_l2" />
+    <ImageView
+        android:id="@+id/iv_coin_left_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_coin_l3" />
+    <ImageView
+        android:id="@+id/iv_coin_left_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_hand_shake_coin_l4" />
+</RelativeLayout>
