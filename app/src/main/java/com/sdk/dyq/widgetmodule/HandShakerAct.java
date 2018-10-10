@@ -18,10 +18,17 @@ public class HandShakerAct extends Activity {
     }
 
     public void onClick(View view){
-        hand_shaker_view.testAnim();
     }
     private void init() {
         hand_shaker_view = (HandShakerView) findViewById(R.id.hand_shaker_view);
+        if(hand_shaker_view!=null)
+            hand_shaker_view.post(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+
     }
 
     private void animAction(){
@@ -29,7 +36,8 @@ public class HandShakerAct extends Activity {
             hand_shaker_view.post(new Runnable() {
                 @Override
                 public void run() {
-                    hand_shaker_view.startAnim();
+                    hand_shaker_view.startUpDownAnim();
+//                    hand_shaker_view.startAnim();
                 }
             });
     }

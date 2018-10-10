@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_hand_shake_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/tv_hand_shaker_circle_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_hand_shake_gray_bg"
-        android:layout_centerInParent="true"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:padding="30px"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_hand_shake_gray_bg" />
+
     <ImageView
         android:id="@+id/iv_hand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_hand_shaker"
-        android:layout_centerInParent="true"/>
+        android:layout_width="158dp"
+        android:layout_height="224dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/bg_hand_shaker" />
+
     <ImageView
         android:id="@+id/iv_voucher_left_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_left"
-        />
+        android:src="@drawable/icon_hand_shake_voucher_left" />
+
     <ImageView
         android:id="@+id/iv_voucher_left_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_left"
-        />
+        android:src="@drawable/icon_hand_shake_voucher_left" />
+
     <ImageView
         android:id="@+id/iv_voucher_right_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_right"
-        />
+        android:src="@drawable/icon_hand_shake_voucher_right" />
+
     <ImageView
         android:id="@+id/iv_voucher_right_2"
         android:layout_width="wrap_content"
@@ -44,35 +49,38 @@
         android:id="@+id/iv_coin_right_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_r1"
-        />
+        android:src="@drawable/icon_hand_shake_coin_r1" />
+
     <ImageView
         android:id="@+id/iv_coin_right_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_r3"
-        />
+        android:src="@drawable/icon_hand_shake_coin_r3" />
+
     <ImageView
         android:id="@+id/iv_coin_right_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_r2"
-        />
+        android:src="@drawable/icon_hand_shake_coin_r2" />
+
     <ImageView
         android:id="@+id/iv_coin_left_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/icon_hand_shake_coin_l1" />
+
     <ImageView
         android:id="@+id/iv_coin_left_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/icon_hand_shake_coin_l2" />
+
     <ImageView
         android:id="@+id/iv_coin_left_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/icon_hand_shake_coin_l3" />
+
     <ImageView
         android:id="@+id/iv_coin_left_4"
         android:layout_width="wrap_content"
