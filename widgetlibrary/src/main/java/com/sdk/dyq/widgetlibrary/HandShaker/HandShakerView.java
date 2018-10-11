@@ -5,16 +5,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.sdk.dyq.widgetlibrary.R;
@@ -26,19 +23,12 @@ public class HandShakerView extends RelativeLayout {
     ImageView iv_hand;
     AnimationDrawable handAnimDrawable;
     ImageView tv_hand_shaker_circle_bg;
-    AnimatorSet bgAnimatorSet;//bg动画集
-    List<Animator> bgAnimators = new ArrayList<>();
-    ObjectAnimator bgRotationAnim;
-    ObjectAnimator bgShineAnim;
     long bgRotationCurrTime;
-
-
 
     ImageView iv_voucher_left_1;
     ImageView iv_voucher_left_2;
     ImageView iv_voucher_right_1;
     ImageView iv_voucher_right_2;
-
     ImageView iv_coin_left1;
     ImageView iv_coin_left2;
     ImageView iv_coin_left3;
@@ -46,7 +36,6 @@ public class HandShakerView extends RelativeLayout {
     ImageView iv_coin_right1;
     ImageView iv_coin_right2;
     ImageView iv_coin_right3;
-
 
     LinearInterpolator linearInterpolator;
     boolean firstInited;//是否执行了startAnim
@@ -61,10 +50,11 @@ public class HandShakerView extends RelativeLayout {
     }
 
     RelativeLayout container;
+
     private void init(Context context, AttributeSet attrs) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_hand_shaker, this, true);
         container = (RelativeLayout) view.findViewById(R.id.rl_hand_shake_container);
-        container.setBackgroundColor(Color.argb(250,0,0,0));
+        container.setBackgroundColor(Color.argb(250, 0, 0, 0));
 
         iv_hand = (ImageView) view.findViewById(R.id.iv_hand);
         tv_hand_shaker_circle_bg = (ImageView) view.findViewById(R.id.tv_hand_shaker_circle_bg);
@@ -81,6 +71,7 @@ public class HandShakerView extends RelativeLayout {
         iv_coin_right1 = (ImageView) view.findViewById(R.id.iv_coin_right_1);
         iv_coin_right2 = (ImageView) view.findViewById(R.id.iv_coin_right_2);
         iv_coin_right3 = (ImageView) view.findViewById(R.id.iv_coin_right_3);
+
 //        addView(view);//如果View view = LayoutInflater.from(context).inflate(R.layout.layout_hand_shaker,null)则需要addView(view);
         linearInterpolator = new LinearInterpolator();
     }
@@ -104,41 +95,6 @@ public class HandShakerView extends RelativeLayout {
         return false;
     }
 
-    /**
-     * 背景圆圈转动动画
-     *
-     * @return
-     */
-    private boolean startBgAnim() {
-        if (tv_hand_shaker_circle_bg == null) {
-            return false;
-        }
-        if (bgRotationAnim == null) {
-            bgRotationAnim = ObjectAnimator.ofFloat(tv_hand_shaker_circle_bg, "rotation", 0f, 360f);
-            bgRotationAnim.setDuration(5000);
-            bgRotationAnim.setRepeatCount(ValueAnimator.INFINITE);//无限循环
-            bgRotationAnim.setInterpolator(linearInterpolator);
-            bgRotationAnim.setRepeatMode(ValueAnimator.RESTART);//
-            bgAnimators.add(bgRotationAnim);
-        }
-        if(bgShineAnim == null){
-            bgShineAnim = ObjectAnimator.ofFloat(tv_hand_shaker_circle_bg,"alpha",1f,0.3f,1f);
-            bgShineAnim.setDuration(2000);
-            bgShineAnim.setRepeatCount(ValueAnimator.INFINITE);//无限循环
-            bgShineAnim.setInterpolator(linearInterpolator);
-            bgShineAnim.setRepeatMode(ValueAnimator.INFINITE);
-            bgAnimators.add(bgShineAnim);
-        }
-//        bgRotationAnim.start();
-//        bgShineAnim.start();
-        if(bgAnimatorSet==null) {
-            bgAnimatorSet = new AnimatorSet();
-            bgAnimatorSet.playTogether(bgAnimators);
-        }
-        bgAnimatorSet.start();
-
-        return true;
-    }
 
     /**
      * 开启icon位移+上下浮动动画
@@ -147,9 +103,13 @@ public class HandShakerView extends RelativeLayout {
      * @param translateTime
      */
     protected void startIconAnim(final View view, long desX, long desY, long translateTime, boolean temporaryBigger, long startDelay) {
-        if(view.getVisibility() == INVISIBLE){
+        if (view.getVisibility() != VISIBLE) {
             view.setVisibility(VISIBLE);
+            view.setAlpha(0);
         }
+        desX = desX - view.getWidth() / 2;
+        desY = desY - view.getHeight() / 2;
+
         translateTime = 400;
         long startX = viewWidth / 2L;
         long startY = viewHeight / 2L;
@@ -222,27 +182,40 @@ public class HandShakerView extends RelativeLayout {
 
     //endregion===动画效果============
 
+    private void initBgHeight() {
+        if (tv_hand_shaker_circle_bg != null) {
+            LayoutParams lp = (LayoutParams) tv_hand_shaker_circle_bg.getLayoutParams();
+            lp.height = viewWidth;
+            tv_hand_shaker_circle_bg.setLayoutParams(lp);
+        }
+    }
 
-    private void initLayout(){
+    //region=====onLayout()完成后======
+    private boolean locationInited = false;
+
+    private void initLayout() {
 
         viewWidth = getMeasuredWidth();
         viewHeight = getMeasuredHeight();
 
-        LinearLayout.LayoutParams lpContainer = (LinearLayout.LayoutParams) getLayoutParams();
-        lpContainer.height = viewWidth;
-        lpContainer.width = viewWidth;
-        setLayoutParams(lpContainer);
-        initHandLocationLayout();
+//        initHandLocationLayout();
+        initBgHeight();
+        locationInited = true;
     }
 
     private boolean initHandLocation = false;
+    private float handY = -1;
 
-    private void initHandLocationLayout(){
-        if(iv_hand != null && !initHandLocation){
-            iv_hand.setY(iv_hand.getY() - iv_hand.getHeight()/4F);
+    private void initHandLocationLayout() {
+        if (iv_hand != null && !initHandLocation) {
+            iv_hand.setY(iv_hand.getY() - iv_hand.getHeight() / 4F);
             initHandLocation = true;
+            handY = iv_hand.getY();
         }
     }
+
+    //endregion=====onLayout()完成后======
+
 
     //region===动画的开启与关闭==
 
@@ -252,27 +225,19 @@ public class HandShakerView extends RelativeLayout {
     /**
      * 最先摆动出现动画
      */
-    public void startUpDownAnim(){
-
+    public void startUpDownAnim() {
+        if (!locationInited) {
+            initLayout();
+        }
+        startHandShakeAnim();
 
         AnimatorSet handShowSet = new AnimatorSet();
         List<Animator> animators = new ArrayList<>();
 
-        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(iv_hand,"alpha",0,1);
+        //region====渐变颜色+上下动画========
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(iv_hand, "alpha", 0, 1);
         alphaAnim.setDuration(500);
-        alphaAnim.setRepeatCount(1);
-        animators.add(alphaAnim);
-
-        ObjectAnimator upDownAnim = ObjectAnimator.ofFloat(iv_hand,"translationY",  - 12.0f, 12.0f, - 12.0f);
-        upDownAnim.setDuration(1000);
-        upDownAnim.setRepeatCount(1);
-        animators.add(upDownAnim);
-
-
-        ObjectAnimator translationYAnim = ObjectAnimator.ofFloat(tv_hand_shaker_circle_bg, "translationY",  - 12.0f, 12.0f, - 12.0f);
-        translationYAnim.setDuration(1000);
-        translationYAnim.setRepeatCount(1);
-        translationYAnim.addListener(new Animator.AnimatorListener() {
+        alphaAnim.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -280,7 +245,7 @@ public class HandShakerView extends RelativeLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                startAnim();
+                startExporeAnim();
             }
 
             @Override
@@ -293,27 +258,57 @@ public class HandShakerView extends RelativeLayout {
 
             }
         });
+        animators.add(alphaAnim);
 
+        ObjectAnimator upDownAnim = ObjectAnimator.ofFloat(iv_hand, "translationY", handY, handY - 90.0f, handY);
+        upDownAnim.setDuration(1000);
+        animators.add(upDownAnim);
+
+        ObjectAnimator translationYAnim = ObjectAnimator.ofFloat(tv_hand_shaker_circle_bg, "translationY", 0, 0 - 90.0f, 0);
+        translationYAnim.setDuration(1000);
         animators.add(translationYAnim);
+        //endregion====渐变颜色+上下动画========
+
+        //region=====背景发光动画=========
+
+        ObjectAnimator bgRotationAnim = ObjectAnimator.ofFloat(tv_hand_shaker_circle_bg, "rotation", 0f, 360f);
+        bgRotationAnim.setDuration(5000);
+        bgRotationAnim.setRepeatCount(ValueAnimator.INFINITE);//无限循环
+        bgRotationAnim.setInterpolator(linearInterpolator);
+        bgRotationAnim.setRepeatMode(ValueAnimator.RESTART);//
+        animators.add(bgRotationAnim);
+
+        ObjectAnimator bgShineAnim = ObjectAnimator.ofFloat(tv_hand_shaker_circle_bg, "alpha", 1f, 0.3f, 1f);
+        bgShineAnim.setDuration(2000);
+        bgShineAnim.setRepeatCount(ValueAnimator.INFINITE);//无限循环
+        bgShineAnim.setInterpolator(linearInterpolator);
+        bgShineAnim.setRepeatMode(ValueAnimator.INFINITE);
+        animators.add(bgShineAnim);
+        //endregion=====背景发光动画=========
+
         handShowSet.playTogether(animators);
         handShowSet.start();
     }
-    public void startAnim() {
-        startHandShakeAnim();
-        startBgAnim();
 
-        int right2Width = iv_voucher_right_2.getMeasuredWidth();
+    /**
+     * 洒开金币和卡券动画
+     */
+    private void startExporeAnim() {
         //卡券icon
-        startIconAnim(iv_voucher_right_1, (long) (viewWidth * (0.73F)), 0, 3000, false, 100);
-        startIconAnim(iv_voucher_right_2, (long) (viewWidth-(2*right2Width/3F)), (long) (viewHeight * (2 / 7F)), 3000, true, 0);
-        startIconAnim(iv_voucher_left_1, -20, (long) (viewHeight * (1 / 7F)), 3000, true, 0);
-        startIconAnim(iv_voucher_left_2, (long) (viewWidth * (1 / 4F)), (long) (viewHeight * (1 / 2F) - 10), 3000, false, 100);
+        startIconAnim(iv_voucher_right_1, (long) (viewWidth * (0.777F)), (long) (viewHeight * 0.219F), 3000, false, 100);
+        startIconAnim(iv_voucher_right_2, (long) (viewWidth - (14F)), (long) (viewHeight * (0.379F)), 3000, true, 0);
+        startIconAnim(iv_voucher_left_1, 5, (long) (viewHeight * (0.315F)), 3000, true, 0);
+        startIconAnim(iv_voucher_left_2, (long) (viewWidth * (0.253F)), (long) (viewHeight * 0.5F), 3000, false, 100);
         //金币icon
-        startIconAnim(iv_coin_right1, (long) (viewWidth * (3 / 4F)), (long) (viewHeight * (2 / 7F)), 3000, false, 0);
-        startIconAnim(iv_coin_right2,(long) (viewWidth * (3 / 4F))+50, (long) (viewHeight * (2 / 7F))+50, 3000, false, 100);
-        startIconAnim(iv_coin_right3, (long) (viewWidth * (2 / 3F)), (long) (viewHeight * (1 / 2F))-50, 3000, false, 100);
+        startIconAnim(iv_coin_right1, (long) (viewWidth * 0.769F), (long) (viewHeight * 0.333F), 3000, false, 0);
+        startIconAnim(iv_coin_right2, (long) (viewWidth * 0.817F), (long) (viewHeight * 0.45F), 3000, false, 100);
+        startIconAnim(iv_coin_right3, (long) (viewWidth * 0.682F), (long) (viewHeight * 0.491F), 3000, false, 100);
 
-//        startIconAnim(iv_coin_left1,);
+        startIconAnim(iv_coin_left1, (long) (viewWidth * 0.3), (long) (viewHeight * 0.308), 3000, false, 0);
+        startIconAnim(iv_coin_left2, (long) (viewWidth * 0.437), (long) (viewHeight * 0.38), 3000, true, 0);
+        startIconAnim(iv_coin_left3, (long) (viewWidth * 0.289), (long) (viewHeight * 0.422), 3000, false, 0);
+        startIconAnim(iv_coin_left4, 28, (long) (viewHeight * 0.39), 3000, false, 0);
+
     }
 
 
@@ -321,25 +316,8 @@ public class HandShakerView extends RelativeLayout {
         if (handAnimDrawable != null) {
             handAnimDrawable.stop();
         }
-        if (bgRotationAnim != null) {
-            bgRotationCurrTime = bgRotationAnim.getCurrentPlayTime();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                bgRotationAnim.pause();
-            }
-        }
     }
 
     //endregion===动画的开启与关闭==
 
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-        initLayout();
-    }
 }

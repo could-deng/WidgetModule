@@ -24,66 +24,77 @@
         android:id="@+id/iv_voucher_left_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_left" />
+        android:src="@drawable/icon_hand_shake_voucher_left"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_voucher_left_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_left" />
+        android:src="@drawable/icon_hand_shake_voucher_left"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_voucher_right_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_right" />
+        android:src="@drawable/icon_hand_shake_voucher_right"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_voucher_right_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_right" />
+        android:src="@drawable/icon_hand_shake_voucher_right"
+        android:visibility="gone"/>
 
     <!--金币-->
     <ImageView
         android:id="@+id/iv_coin_right_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_r1" />
+        android:src="@drawable/icon_hand_shake_coin_r1"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_right_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_r3" />
+        android:src="@drawable/icon_hand_shake_coin_r3"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_right_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_r2" />
+        android:src="@drawable/icon_hand_shake_coin_r2"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_l1" />
+        android:src="@drawable/icon_hand_shake_coin_l1"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_l2" />
+        android:src="@drawable/icon_hand_shake_coin_l2"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_l3" />
+        android:src="@drawable/icon_hand_shake_coin_l3"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_coin_l4" />
+        android:src="@drawable/icon_hand_shake_coin_l4"
+        android:visibility="gone"/>
 </RelativeLayout>
