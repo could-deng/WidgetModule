@@ -37,7 +37,6 @@ public class HandShakerAct extends Activity {
                 @Override
                 public void run() {
                     hand_shaker_view.startUpDownAnim();
-//                    hand_shaker_view.startAnim();
                 }
             });
     }
