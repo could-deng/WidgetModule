@@ -22,88 +22,88 @@
 
     <ImageView
         android:id="@+id/iv_voucher_left_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_left"
+        android:layout_width="59dp"
+        android:layout_height="68dp"
+        android:src="@drawable/icon_hand_shake_voucher_left1"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_voucher_left_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_left"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:src="@drawable/icon_hand_shake_voucher_left2"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_voucher_right_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_right"
+        android:layout_width="49dp"
+        android:layout_height="26dp"
+        android:src="@drawable/icon_hand_shake_voucher_right1"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_voucher_right_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_hand_shake_voucher_right"
+        android:layout_width="52dp"
+        android:layout_height="30dp"
+        android:src="@drawable/icon_hand_shake_voucher_right2"
         android:visibility="gone"/>
 
     <!--金币-->
     <ImageView
         android:id="@+id/iv_coin_right_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/icon_hand_shake_coin_r1"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_right_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="9dp"
+        android:layout_height="9dp"
         android:src="@drawable/icon_hand_shake_coin_r3"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_right_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="19dp"
+        android:layout_height="28dp"
         android:src="@drawable/icon_hand_shake_coin_r2"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:src="@drawable/icon_hand_shake_coin_l1"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="11dp"
+        android:layout_height="18dp"
         android:src="@drawable/icon_hand_shake_coin_l2"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="13dp"
+        android:layout_height="10dp"
         android:src="@drawable/icon_hand_shake_coin_l3"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_coin_left_4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="11dp"
+        android:layout_height="13dp"
         android:src="@drawable/icon_hand_shake_coin_l4"
         android:visibility="gone"/>
     <ImageView
         android:id="@+id/iv_hand_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:src="@drawable/hand_shake_close_icon"
         android:layout_below="@id/tv_hand_shaker_circle_bg"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="-20dp"
         />
 </RelativeLayout>

@@ -18,20 +18,15 @@ public class HandShakerAct extends Activity {
     }
 
     public void onClick(View view){
+        if(!hand_shaker_view.isPause){
+            animStop();
+        }else{
+            animResume();
+        }
     }
+
     private void init() {
         hand_shaker_view = (HandShakerView) findViewById(R.id.hand_shaker_view);
-        if(hand_shaker_view!=null)
-            hand_shaker_view.post(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            });
-
-    }
-
-    private void animAction(){
         if(hand_shaker_view!=null)
             hand_shaker_view.post(new Runnable() {
                 @Override
@@ -39,9 +34,20 @@ public class HandShakerAct extends Activity {
                     hand_shaker_view.startUpDownAnim();
                 }
             });
+
+    }
+
+    private void animResume(){
+        if(hand_shaker_view!=null && hand_shaker_view.getVisibility()==View.VISIBLE)
+            hand_shaker_view.post(new Runnable() {
+                @Override
+                public void run() {
+                    hand_shaker_view.resumeAnim();
+                }
+            });
     }
     private void animStop(){
-        if(hand_shaker_view!=null)
+        if(hand_shaker_view!=null && hand_shaker_view.getVisibility() == View.VISIBLE)
             hand_shaker_view.post(new Runnable() {
                 @Override
                 public void run() {
@@ -52,12 +58,12 @@ public class HandShakerAct extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        animAction();
+//        animResume();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        animStop();
+        animStop();
     }
 }

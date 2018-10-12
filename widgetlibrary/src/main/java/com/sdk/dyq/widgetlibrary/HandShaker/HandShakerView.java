@@ -7,7 +7,9 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -20,11 +22,10 @@ import java.util.Random;
 
 
 public class HandShakerView extends RelativeLayout {
+
     ImageView iv_hand;
     AnimationDrawable handAnimDrawable;
     ImageView tv_hand_shaker_circle_bg;
-    long bgRotationCurrTime;
-
     ImageView iv_hand_close;
     ImageView iv_voucher_left_1;
     ImageView iv_voucher_left_2;
@@ -52,8 +53,9 @@ public class HandShakerView extends RelativeLayout {
 
     RelativeLayout container;
     Random random;
-    private Random getRandom(){
-        if(random==null){
+
+    private Random getRandom() {
+        if (random == null) {
             random = new Random();
         }
         return random;
@@ -69,9 +71,10 @@ public class HandShakerView extends RelativeLayout {
         iv_hand_close.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listener!=null){
+                if (listener != null) {
                     listener.onIconClose();
                 }
+                endAnim();
             }
         });
 
@@ -95,11 +98,11 @@ public class HandShakerView extends RelativeLayout {
         linearInterpolator = new LinearInterpolator();
     }
 
-    public void setIconListener(IconListener listener){
-        this.listener =listener;
+    public void setIconListener(IconListener listener) {
+        this.listener = listener;
     }
 
-    public interface IconListener{
+    public interface IconListener {
         void onIconClose();
     }
 
@@ -127,9 +130,10 @@ public class HandShakerView extends RelativeLayout {
             tv_hand_shaker_circle_bg.setLayoutParams(lp);
         }
     }
+
     private void initHandLocationLayout() {
         if (iv_hand != null && !initHandLocation) {
-            iv_hand.setY(- iv_hand.getHeight() / 4F);//iv_hand.getY()
+            iv_hand.setY(-iv_hand.getHeight() / 4F);//iv_hand.getY()
             initHandLocation = true;
             handY = iv_hand.getY();
         }
@@ -144,15 +148,17 @@ public class HandShakerView extends RelativeLayout {
      * 最先摆动出现动画
      */
     public void startUpDownAnim() {
+        Log.e("TT","startUpDownAnim");
+
         if (!locationInited) {
             initLayout();
         }
         startHandShakeAnim();
 
-        AnimatorSet handShowSet = new AnimatorSet();
         List<Animator> animators = new ArrayList<>();
 
         //region====渐变颜色+上下动画========
+
         ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(iv_hand, "alpha", 0, 1);
         alphaAnim.setDuration(500);
         alphaAnim.addListener(new Animator.AnimatorListener() {
@@ -185,6 +191,7 @@ public class HandShakerView extends RelativeLayout {
         ObjectAnimator translationYAnim = ObjectAnimator.ofFloat(tv_hand_shaker_circle_bg, "translationY", 0, 0 - 90.0f, 0);
         translationYAnim.setDuration(1000);
         animators.add(translationYAnim);
+
         //endregion====渐变颜色+上下动画========
 
         //region=====背景发光动画=========
@@ -202,39 +209,138 @@ public class HandShakerView extends RelativeLayout {
         bgShineAnim.setInterpolator(linearInterpolator);
         bgShineAnim.setRepeatMode(ValueAnimator.INFINITE);
         animators.add(bgShineAnim);
+
         //endregion=====背景发光动画=========
 
-        handShowSet.playTogether(animators);
-        handShowSet.start();
+        firstAnimatorSet.playTogether(animators);
+        firstAnimatorSet.start();
     }
+
+    private AnimatorSet firstAnimatorSet = new AnimatorSet();//开始洒金币卡券动画前的全部动画集合
+    private AnimatorSet animatorSetVoucherR1 = new AnimatorSet();
+    private AnimatorSet animatorSetVoucherR2 = new AnimatorSet();
+    private AnimatorSet animatorSetVoucherL1 = new AnimatorSet();
+    private AnimatorSet animatorSetVoucherL2 = new AnimatorSet();
+    private AnimatorSet animatorSetCoinR1 = new AnimatorSet();
+    private AnimatorSet animatorSetCoinR2 = new AnimatorSet();
+    private AnimatorSet animatorSetCoinR3 = new AnimatorSet();
+    private AnimatorSet animatorSetCoinL1 = new AnimatorSet();
+    private AnimatorSet animatorSetCoinL2 = new AnimatorSet();
+    private AnimatorSet animatorSetCoinL3 = new AnimatorSet();
+    private AnimatorSet animatorSetCoinL4 = new AnimatorSet();
 
     /**
      * 洒开金币和卡券动画
      */
     private void startExporeAnim() {
         //卡券icon
-        startIconAnim(iv_voucher_right_1, (long) (viewWidth * (0.777F)), (long) (viewHeight * 0.219F),  false);
-        startIconAnim(iv_voucher_right_2, (long) (viewWidth - (14F)), (long) (viewHeight * (0.379F)), true);
-        startIconAnim(iv_voucher_left_1, 5, (long) (viewHeight * (0.315F)), true);
-        startIconAnim(iv_voucher_left_2, (long) (viewWidth * (0.253F)), (long) (viewHeight * 0.5F), false);
+        int left_1_width = iv_voucher_left_1.getWidth();
+        Log.e("TT","left_1_width.width" +left_1_width);
+        startIconAnim(iv_voucher_right_1, (long) (viewWidth * (0.777F)), (long) (viewHeight * 0.219F), false, animatorSetVoucherR1);
+        startIconAnim(iv_voucher_right_2, (long) (viewWidth - 90), (long) (viewHeight * (0.379F)), true, animatorSetVoucherR2);
+        startIconAnim(iv_voucher_left_1, -25, (long) (viewHeight * (0.315F)), true, animatorSetVoucherL1);
+        startIconAnim(iv_voucher_left_2, (long) (viewWidth * (0.253F)), (long) (viewHeight * 0.5F), false, animatorSetVoucherL2);
         //金币icon
-        startIconAnim(iv_coin_right1, (long) (viewWidth * 0.769F), (long) (viewHeight * 0.333F), false);
-        startIconAnim(iv_coin_right2, (long) (viewWidth * 0.817F), (long) (viewHeight * 0.45F),false);
-        startIconAnim(iv_coin_right3, (long) (viewWidth * 0.682F), (long) (viewHeight * 0.491F), false);
+        startIconAnim(iv_coin_right1, (long) (viewWidth * 0.769F), (long) (viewHeight * 0.333F), false, animatorSetCoinR1);
+        startIconAnim(iv_coin_right2, (long) (viewWidth * 0.817F), (long) (viewHeight * 0.45F), false, animatorSetCoinR2);
+        startIconAnim(iv_coin_right3, (long) (viewWidth * 0.682F), (long) (viewHeight * 0.491F), false, animatorSetCoinR3);
 
-        startIconAnim(iv_coin_left1, (long) (viewWidth * 0.3), (long) (viewHeight * 0.308),  false);
-        startIconAnim(iv_coin_left2, (long) (viewWidth * 0.437), (long) (viewHeight * 0.38),  true);
-        startIconAnim(iv_coin_left3, (long) (viewWidth * 0.289), (long) (viewHeight * 0.422), false);
-        startIconAnim(iv_coin_left4, 28, (long) (viewHeight * 0.39),  false);
-
+        startIconAnim(iv_coin_left1, (long) (viewWidth * 0.3), (long) (viewHeight * 0.308), false, animatorSetCoinL1);
+        startIconAnim(iv_coin_left2, (long) (viewWidth * 0.437), (long) (viewHeight * 0.38), true, animatorSetCoinL2);
+        startIconAnim(iv_coin_left3, (long) (viewWidth * 0.289), (long) (viewHeight * 0.422), false, animatorSetCoinL3);
+        startIconAnim(iv_coin_left4, 28, (long) (viewHeight * 0.39), false, animatorSetCoinL4);
     }
 
-
-    public void stopAnim() {
+    /**
+     * 销毁控件
+     */
+    public void endAnim() {
         if (handAnimDrawable != null) {
             handAnimDrawable.stop();
         }
+        firstAnimatorSet.end();
+        firstAnimatorSet.removeAllListeners();
+        animatorSetVoucherR1.end();
+        animatorSetVoucherR2.end();
+        animatorSetVoucherL1.end();
+        animatorSetVoucherL2.end();
+        animatorSetCoinR1.end();
+        animatorSetCoinR2.end();
+        animatorSetCoinR3.end();
+        animatorSetCoinL1.end();
+        animatorSetCoinL2.end();
+        animatorSetCoinL3.end();
+        animatorSetCoinL4.end();
     }
+
+    public boolean isPause = false;
+    public void stopAnim() {
+        Log.e("TT","stopAnim()");
+        if (handAnimDrawable != null) {
+            handAnimDrawable.stop();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if(firstAnimatorSet.isRunning())
+                firstAnimatorSet.pause();
+            if (animatorSetVoucherR1.isRunning())
+                animatorSetVoucherR1.pause();
+            if (animatorSetVoucherR2.isRunning())
+                animatorSetVoucherR2.pause();
+            if (animatorSetVoucherL1.isRunning())
+                animatorSetVoucherL1.pause();
+            if (animatorSetVoucherL2.isRunning())
+                animatorSetVoucherL2.pause();
+            if (animatorSetCoinR1.isRunning())
+                animatorSetCoinR1.pause();
+            if (animatorSetCoinR2.isRunning())
+                animatorSetCoinR2.pause();
+            if (animatorSetCoinR3.isRunning())
+                animatorSetCoinR3.pause();
+            if (animatorSetCoinL1.isRunning())
+                animatorSetCoinL1.pause();
+            if (animatorSetCoinL2.isRunning())
+                animatorSetCoinL2.pause();
+            if (animatorSetCoinL3.isRunning())
+                animatorSetCoinL3.pause();
+            if (animatorSetCoinL4.isRunning())
+                animatorSetCoinL4.pause();
+        }
+        isPause = true;
+    }
+
+    public void resumeAnim() {
+        if (handAnimDrawable != null) {
+            handAnimDrawable.run();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if(firstAnimatorSet.isPaused())
+                firstAnimatorSet.resume();
+            if (animatorSetVoucherR1.isPaused())
+                animatorSetVoucherR1.resume();
+            if (animatorSetVoucherR2.isPaused())
+                animatorSetVoucherR2.resume();
+            if (animatorSetVoucherL1.isPaused())
+                animatorSetVoucherL1.resume();
+            if (animatorSetVoucherL2.isPaused())
+                animatorSetVoucherL2.resume();
+            if (animatorSetCoinR1.isPaused())
+                animatorSetCoinR1.resume();
+            if (animatorSetCoinR2.isPaused())
+                animatorSetCoinR2.resume();
+            if (animatorSetCoinR3.isPaused())
+                animatorSetCoinR3.resume();
+            if (animatorSetCoinL1.isPaused())
+                animatorSetCoinL1.resume();
+            if (animatorSetCoinL2.isPaused())
+                animatorSetCoinL2.resume();
+            if (animatorSetCoinL3.isPaused())
+                animatorSetCoinL3.resume();
+            if (animatorSetCoinL4.isPaused())
+                animatorSetCoinL4.resume();
+        }
+        isPause = false;
+    }
+
 
     //endregion===动画的开启与关闭======
 
@@ -243,6 +349,7 @@ public class HandShakerView extends RelativeLayout {
 
     /**
      * 手挥动动画
+     *
      * @return
      */
     private boolean startHandShakeAnim() {
@@ -250,6 +357,7 @@ public class HandShakerView extends RelativeLayout {
             iv_hand.setImageResource(R.drawable.bg_hand_shaker);
             handAnimDrawable = (AnimationDrawable) iv_hand.getDrawable();
             if (handAnimDrawable != null) {
+                handAnimDrawable.stop();
                 handAnimDrawable.start();
                 return true;
             }
@@ -262,13 +370,13 @@ public class HandShakerView extends RelativeLayout {
      *
      * @param view
      */
-    protected void startIconAnim(final View view, long desX, long desY, boolean temporaryBigger) {
+    protected void startIconAnim(final View view, long desX, long desY, boolean temporaryBigger, AnimatorSet totalAnimationSet) {
         if (view.getVisibility() != VISIBLE) {
             view.setVisibility(VISIBLE);
             view.setAlpha(0);
         }
-        desX = desX - view.getWidth() / 2;
-        desY = desY - view.getHeight() / 2;
+//        desX = desX - view.getWidth() / 2;
+//        desY = desY - view.getHeight() / 2;
 
         long translateTime = 400;
         long startX = viewWidth / 2L;
@@ -309,12 +417,13 @@ public class HandShakerView extends RelativeLayout {
         AnimatorSet translateAnimatorSet = new AnimatorSet();//位移动画集合
         translateAnimatorSet.playTogether(animators);
 
-        AnimatorSet totalAnimationSet = new AnimatorSet();//总的动画集合
         totalAnimationSet.play(translateAnimatorSet)
                 .before(getFlowAnim(view, desX, desY, 100));
         totalAnimationSet.setStartDelay(getRandom().nextInt(201));
         totalAnimationSet.start();
+
     }
+
 
     /**
      * 上下浮动效果
@@ -327,9 +436,9 @@ public class HandShakerView extends RelativeLayout {
     private AnimatorSet getFlowAnim(View view, long desX, long desY, long startDelay) {
         List<Animator> flowAnimators = new ArrayList<>();
         ObjectAnimator translationYAnim;
-        if(getRandom().nextInt(2) == 1) {
+        if (getRandom().nextInt(2) == 1) {
             translationYAnim = ObjectAnimator.ofFloat(view, "translationY", desY - 6.0f, desY + 6.0f, desY - 6.0f);
-        }else{
+        } else {
             translationYAnim = ObjectAnimator.ofFloat(view, "translationY", desY + 6.0f, desY - 6.0f, desY + 6.0f);
         }
         translationYAnim.setDuration(800);
