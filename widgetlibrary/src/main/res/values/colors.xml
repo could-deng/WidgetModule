@@ -28,4 +28,6 @@
     <color name="money_color_red">#ec2521</color>
     <color name="main_2d2f3b">#2d2f3b</color>
 
+    <color name="main_000000_percent_1">#99000000</color>
+
 </resources>

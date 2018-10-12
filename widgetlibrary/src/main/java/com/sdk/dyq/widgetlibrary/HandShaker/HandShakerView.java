@@ -65,7 +65,7 @@ public class HandShakerView extends RelativeLayout {
     private void init(Context context, AttributeSet attrs) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_hand_shaker, this, true);
         container = (RelativeLayout) view.findViewById(R.id.rl_hand_shake_container);
-        container.setBackgroundColor(Color.argb(250, 0, 0, 0));
+        container.setBackgroundColor(getResources().getColor(R.color.main_000000_percent_1));
 
         iv_hand_close = (ImageView) view.findViewById(R.id.iv_hand_close);
         iv_hand_close.setOnClickListener(new OnClickListener() {
@@ -245,7 +245,7 @@ public class HandShakerView extends RelativeLayout {
         startIconAnim(iv_coin_right2, (long) (viewWidth * 0.817F), (long) (viewHeight * 0.45F), false, animatorSetCoinR2);
         startIconAnim(iv_coin_right3, (long) (viewWidth * 0.682F), (long) (viewHeight * 0.491F), false, animatorSetCoinR3);
 
-        startIconAnim(iv_coin_left1, (long) (viewWidth * 0.3), (long) (viewHeight * 0.308), false, animatorSetCoinL1);
+        startIconAnim(iv_coin_left1, (long) (viewWidth * 0.27), (long) (viewHeight * 0.308), false, animatorSetCoinL1);
         startIconAnim(iv_coin_left2, (long) (viewWidth * 0.437), (long) (viewHeight * 0.38), true, animatorSetCoinL2);
         startIconAnim(iv_coin_left3, (long) (viewWidth * 0.289), (long) (viewHeight * 0.422), false, animatorSetCoinL3);
         startIconAnim(iv_coin_left4, 28, (long) (viewHeight * 0.39), false, animatorSetCoinL4);
